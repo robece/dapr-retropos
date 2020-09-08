@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30406.217
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroPOS.App", "RetroPOS.App\RetroPOS.App.csproj", "{F0C380CC-9A50-4C1D-9594-5D882E5549E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroPOS.Audit.Api", "RetroPOS.Audit.Api\RetroPOS.Audit.Api.csproj", "{E665A204-765D-408C-A6D9-5308783637CF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terminal.Gui", "Terminal.Gui\Terminal.Gui.csproj", "{D63BC6BC-51DB-4085-A4D4-D8EF9F5EA741}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{1F1183DB-DD42-4F04-A7CF-825A1FEC0A53}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{F26B0562-37ED-46A6-9444-A5975BB721B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroPOS.Warehouse.Api", "RetroPOS.Warehouse.Api\RetroPOS.Warehouse.Api.csproj", "{46E76F02-3322-4FAA-AE38-B6164A72792C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F0C380CC-9A50-4C1D-9594-5D882E5549E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0C380CC-9A50-4C1D-9594-5D882E5549E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0C380CC-9A50-4C1D-9594-5D882E5549E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0C380CC-9A50-4C1D-9594-5D882E5549E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E665A204-765D-408C-A6D9-5308783637CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E665A204-765D-408C-A6D9-5308783637CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E665A204-765D-408C-A6D9-5308783637CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E665A204-765D-408C-A6D9-5308783637CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D63BC6BC-51DB-4085-A4D4-D8EF9F5EA741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D63BC6BC-51DB-4085-A4D4-D8EF9F5EA741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D63BC6BC-51DB-4085-A4D4-D8EF9F5EA741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D63BC6BC-51DB-4085-A4D4-D8EF9F5EA741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E76F02-3322-4FAA-AE38-B6164A72792C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E76F02-3322-4FAA-AE38-B6164A72792C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E76F02-3322-4FAA-AE38-B6164A72792C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E76F02-3322-4FAA-AE38-B6164A72792C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F0C380CC-9A50-4C1D-9594-5D882E5549E3} = {1F1183DB-DD42-4F04-A7CF-825A1FEC0A53}
+		{E665A204-765D-408C-A6D9-5308783637CF} = {F26B0562-37ED-46A6-9444-A5975BB721B3}
+		{D63BC6BC-51DB-4085-A4D4-D8EF9F5EA741} = {1F1183DB-DD42-4F04-A7CF-825A1FEC0A53}
+		{46E76F02-3322-4FAA-AE38-B6164A72792C} = {F26B0562-37ED-46A6-9444-A5975BB721B3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB3B17FB-5D1A-4FFA-9DDC-F8D886827A44}
+	EndGlobalSection
+EndGlobal

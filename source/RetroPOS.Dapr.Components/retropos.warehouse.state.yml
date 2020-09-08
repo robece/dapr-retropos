@@ -1,0 +1,22 @@
+﻿apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: retropos.warehouse.state
+  namespace: default
+spec:
+  type: state.azure.cosmosdb
+  metadata:
+  - name: url
+    value: [REPLACE]
+  - name: masterKey
+    secretKeyRef:
+      name: [REPLACE]
+      key: [REPLACE]
+  - name: database
+    value: [REPLACE]
+  - name: collection
+    value: [REPLACE]
+scopes:
+  - warehouse-service
+auth:
+  secretStore: retropos.security.secret

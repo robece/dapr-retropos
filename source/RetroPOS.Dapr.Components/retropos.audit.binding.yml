@@ -1,0 +1,20 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: retropos.audit.binding
+  namespace: default
+spec:
+  type: bindings.azure.blobstorage
+  metadata:
+  - name: storageAccount
+    value: [REPLACE]
+  - name: storageAccessKey
+    secretKeyRef:
+      name: [REPLACE]
+      key: [REPLACE]
+  - name: container
+    value: [REPLACE]
+scopes:
+  - audit-service
+auth:
+  secretStore: retropos.security.secret
