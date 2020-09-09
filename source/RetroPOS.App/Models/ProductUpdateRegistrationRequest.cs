@@ -1,6 +1,6 @@
 ﻿namespace RetroPOS.App.Models
 {
-    public class ProductUpdateRegistrationRequest : WarehouseProduct
+    public class ProductUpdateRegistrationRequest : Product
     {
     }
 }

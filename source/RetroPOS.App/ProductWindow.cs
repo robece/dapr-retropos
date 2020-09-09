@@ -25,7 +25,7 @@ namespace RetroPOS.App
         static Label lblSendingData = null;
         static ProgressBar progressBar = null;
 
-        public static void Draw(WarehouseProduct warehouseProduct = null)
+        public static void Draw(Product warehouseProduct = null)
         {
             Application.Init();
 
@@ -45,28 +45,22 @@ namespace RetroPOS.App
                     new MenuItem ("_Save & Close", "", async () => {
 
                         var warehouse = txtWarehouseID.Text.ToString();
-                        var productID = string.Empty;
+                        var productID = Utilities.GetProductID(txtProductName.Text.ToString());
                         var productName = txtProductName.Text.ToString();
-
-                        using (SHA256 sha256Hash = SHA256.Create())
-                        {
-                            byte[] bytes = sha256Hash.ComputeHash(txtProductName.Text.ToUpper().ToByteArray());
-
-                            StringBuilder builder = new StringBuilder();
-                            for (int i = 0; i < bytes.Length; i++)
-                            {
-                                builder.Append(bytes[i].ToString("x2"));
-                            }
-
-                            productID = builder.ToString();
-                        }
-
                         var productQuantity = txtProductQuantity.Text.ToString();
                         var productDescription = txtProductDescription.Text.ToString();
 
                         await SaveProduct(warehouse, productID, productName, productQuantity, productDescription);
+
                     }),
-                    new MenuItem ("_Delete", "", () => { }, () => (warehouseProduct == null) ? false : true),
+                    new MenuItem ("_Delete", "", async() => {
+
+                        var warehouse = txtWarehouseID.Text.ToString();
+                        var productID = Utilities.GetProductID(txtProductName.Text.ToString());
+
+                        await DeleteProduct(warehouse, productID);
+
+                    }, () => (warehouseProduct == null) ? false : true),
                     null,
                     new MenuItem ("_Close", "", () => {
                         Action action = () => SearchProductsWindow.Draw();
@@ -77,17 +71,30 @@ namespace RetroPOS.App
             });
             top.Add(menu);
 
-            lblProductName = new Label("Product name: ")
+            lblWarehouseID = new Label("Warehouse ID: ")
             {
                 X = 1,
                 Y = 1
+            };
+
+            txtWarehouseID = new TextField("")
+            {
+                X = 1,
+                Y = Pos.Bottom(lblWarehouseID),
+                Width = Dim.Percent(10)
+            };
+
+            lblProductName = new Label("Product name: ")
+            {
+                X = 1,
+                Y = Pos.Bottom(txtWarehouseID) + 1
             };
 
             txtProductName = new TextField("")
             {
                 X = 1,
                 Y = Pos.Bottom(lblProductName),
-                Width = Dim.Percent(40)
+                Width = Dim.Percent(20)
             };
 
             lblProductQuantity = new Label("Quantity: ")
@@ -113,26 +120,13 @@ namespace RetroPOS.App
             {
                 X = 1,
                 Y = Pos.Bottom(lblProductDescription),
-                Width = Dim.Percent(40)
-            };
-
-            lblWarehouseID = new Label("Warehouse ID: ")
-            {
-                X = 1,
-                Y = Pos.Bottom(txtProductDescription) + 1
-            };
-
-            txtWarehouseID = new TextField("")
-            {
-                X = 1,
-                Y = Pos.Bottom(lblWarehouseID),
-                Width = Dim.Percent(40)
+                Width = Dim.Percent(20)
             };
 
             lblProductIdNote = new Label("NOTE: The product identifier is generated automatically by using a hash of the product name, if you change the name of the product and then save it a new product will be created.")
             {
                 X = 1,
-                Y = Pos.Bottom(txtWarehouseID) + 1
+                Y = Pos.Bottom(txtProductDescription) + 1
             };
 
             lblSendingData = new Label("SENDING DATA TO SERVICE...")
@@ -166,7 +160,7 @@ namespace RetroPOS.App
 
             if (warehouseProduct == null)
             {
-                txtProductName.FocusFirst();
+                txtWarehouseID.FocusFirst();
             }
             else
             {  
@@ -218,6 +212,51 @@ namespace RetroPOS.App
             catch
             {
                 MessageBox.ErrorQuery(50, 7, "Alert", "There was an error saving the product", "Accept");
+            }
+            finally
+            {
+                progressBar.Fraction = 0;
+                lblSendingData.Visible = false;
+                progressBar.Visible = false;
+            }
+        }
+
+        async static Task DeleteProduct(string warehouseID, string productID)
+        {
+            try
+            {
+                lblSendingData.Visible = true;
+                progressBar.Visible = true;
+
+                var request = new ProductDeletionRequest()
+                {
+                    WarehouseID = warehouseID,
+                    ProductID = productID
+                };
+
+                var jsonPayload = JsonConvert.SerializeObject(request);
+                var stringContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                HttpClient httpClient = new HttpClient();
+                httpClient.Timeout = TimeSpan.FromSeconds(15);
+                var response = await httpClient.PostAsync($"{Settings.WAREHOUSE_API_BASEURL}/warehouse/productdeletion", stringContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.ErrorQuery(50, 7, "Alert", "Product has been successfully deleted", "Accept");
+
+                    Action action = () => SearchProductsWindow.Draw();
+                    running = action;
+                    Application.RequestStop();
+                }
+                else
+                {
+                    MessageBox.ErrorQuery(50, 7, "Alert", "There was an error deleting the product", "Accept");
+                }
+            }
+            catch
+            {
+                MessageBox.ErrorQuery(50, 7, "Alert", "There was an error deleting the product", "Accept");
             }
             finally
             {

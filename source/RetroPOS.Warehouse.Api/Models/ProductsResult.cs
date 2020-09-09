@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace RetroPOS.Warehouse.Api.Models
 {
-    public class WarehouseProductsResult
+    public class ProductsResult
     {
         [JsonProperty("products")]
-        public List<WarehouseProduct> Products { get; set; } = new List<WarehouseProduct>();
+        public List<Product> Products { get; set; } = new List<Product>();
     }
 }

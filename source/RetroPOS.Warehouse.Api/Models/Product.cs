@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace RetroPOS.App.Models
+namespace RetroPOS.Warehouse.Api.Models
 {
-    public class WarehouseProduct
+    public class Product
     {
         [JsonProperty("warehouseID")]
         public string WarehouseID { get; set; }

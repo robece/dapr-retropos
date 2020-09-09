@@ -38,7 +38,7 @@ namespace RetroPOS.Product.Api.Controllers
         }
 
         [HttpPost("warehouseproducts")]
-        public async Task<IActionResult> WarehouseProducts([FromBody] WarehouseProductsRequest request)
+        public async Task<IActionResult> WarehouseProducts([FromBody] ProductsRequest request)
         {
             var result = await warehouseSvc.WarehouseProducts(request);
             return Ok(result.Products);

@@ -20,7 +20,7 @@ namespace RetroPOS.App
         static Label lblSendingData = null;
         static ProgressBar progressBar = null;
 
-        static List<WarehouseProduct> warehouseProducts = null;
+        static List<Product> warehouseProducts = null;
         static int selectedResultsIndex = -1;
 
 
@@ -82,7 +82,8 @@ namespace RetroPOS.App
                 X = 1,
                 Y = Pos.Bottom(lblResult) + 1,
                 Width = Dim.Fill() - 1,
-                Height = Dim.Fill() - 1
+                Height = Dim.Fill() - 1,
+                Visible = false
             };
 
             lstResult.SelectedItemChanged += (ListViewItemEventArgs item) => {
@@ -138,7 +139,7 @@ namespace RetroPOS.App
                 lblSendingData.Visible = true;
                 progressBar.Visible = true;
 
-                var request = new WarehouseProductsRequest()
+                var request = new ProductsRequest()
                 {
                     WarehouseID = warehouseID
                 };
@@ -153,7 +154,7 @@ namespace RetroPOS.App
                 if (response.IsSuccessStatusCode)
                 {
                     var payload = await response.Content.ReadAsStringAsync();
-                    warehouseProducts = JsonConvert.DeserializeObject<List<WarehouseProduct>>(payload);
+                    warehouseProducts = JsonConvert.DeserializeObject<List<Product>>(payload);
                     var list = new List<string>();
                     foreach (var p in warehouseProducts)
                     {
@@ -164,6 +165,8 @@ namespace RetroPOS.App
 
                         list.Add(string.Format("| ProductID: {0,20} | Name: {1,20} | Quantity: {2,20} | Description: {3,20} |", productID, productName, productQuantity, productDescription));
                     }
+
+                    lstResult.Visible = (list.Count > 0) ? true : false;
 
                     lstResult.SetSource(list);
                 }

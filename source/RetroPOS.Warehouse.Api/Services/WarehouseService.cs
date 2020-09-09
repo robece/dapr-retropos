@@ -20,12 +20,12 @@ namespace RetroPOS.Warehouse.Api.Services
         public async Task<bool> ProductUpdateRegistration(ProductUpdateRegistrationRequest request)
         {
             bool result = false;
-            List<WarehouseProduct> list = null;
+            List<Models.Product> list = null;
             var products = await GetWarehouseProducts(request.WarehouseID);
 
             if (products == null)
             {
-                list = new List<WarehouseProduct>();
+                list = new List<Models.Product>();
                 list.Add(request);
             }
             else
@@ -61,7 +61,7 @@ namespace RetroPOS.Warehouse.Api.Services
         public async Task<bool> ProductDeletion(ProductDeletionRequest request)
         {
             bool result = false;
-            List<WarehouseProduct> list = null;
+            List<Models.Product> list = null;
             var products = await GetWarehouseProducts(request.WarehouseID);
 
             if (products != null)
@@ -107,26 +107,26 @@ namespace RetroPOS.Warehouse.Api.Services
             return result;
         }
 
-        public async Task<WarehouseProductsResult> WarehouseProducts(WarehouseProductsRequest request)
+        public async Task<ProductsResult> WarehouseProducts(ProductsRequest request)
         {
-            WarehouseProductsResult result = new WarehouseProductsResult();
+            ProductsResult result = new ProductsResult();
             result.Products = await GetWarehouseProducts(request.WarehouseID);
 
             if (result.Products == null)
-                result.Products = new List<WarehouseProduct>();
+                result.Products = new List<Models.Product>();
 
             return result;
         }
 
-        async Task<List<WarehouseProduct>> GetWarehouseProducts(string warehouseID)
+        async Task<List<Models.Product>> GetWarehouseProducts(string warehouseID)
         {
-            List<WarehouseProduct> result = null;
+            List<Models.Product> result = null;
             var response = await httpClient.GetAsync($"{Settings.DAPR_SIDECAR_BASEURL}/v1.0/state/{Settings.WAREHOUSE_STATE_COMPONENT_NAME}/{warehouseID}");
 
             if (response.IsSuccessStatusCode)
             {
                 var payload = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<List<WarehouseProduct>>(payload);
+                result = JsonConvert.DeserializeObject<List<Models.Product>>(payload);
             }
 
             return result;
