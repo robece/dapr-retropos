@@ -24,7 +24,7 @@ namespace RetroPOS.Product.Api.Controllers
         [HttpPost("registration")]
         public async Task<IActionResult> Registration(CloudEvent cloudEvent)
         {
-            var request = ((JToken)cloudEvent.Data).ToObject<RegistrationRequest>();
+            var request = ((JToken)cloudEvent.Data).ToObject<ProductUpdateRegistrationRequest>();
             var result = await auditSvc.GenerateAuditFile(request);
 
             return Ok(result);

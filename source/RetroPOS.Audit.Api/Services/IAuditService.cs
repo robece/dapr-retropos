@@ -5,6 +5,6 @@ namespace RetroPOS.Audit.Api.Services
 {
     public interface IAuditService
     {
-        Task<bool> GenerateAuditFile(RegistrationRequest request);
+        Task<bool> GenerateAuditFile(ProductUpdateRegistrationRequest request);
     }
 }

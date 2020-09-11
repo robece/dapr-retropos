@@ -16,7 +16,7 @@ namespace RetroPOS.Audit.Api.Services
             this.httpClient = httpClient;
         }
 
-        public async Task<bool> GenerateAuditFile(RegistrationRequest request)
+        public async Task<bool> GenerateAuditFile(ProductUpdateRegistrationRequest request)
         {
             bool result = false;
 
