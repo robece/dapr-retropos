@@ -1,6 +1,10 @@
 # Dapr Retro Point of Sales
 
 <div style="text-align:center">
+    <img src="/resources/images/architecture.png" />
+</div>
+
+<div style="text-align:center">
     <img src="/resources/images/screen01.png" />
 </div>
 
