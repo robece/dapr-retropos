@@ -4,18 +4,6 @@
     <img src="/resources/images/architecture.png" />
 </div>
 
-<div style="text-align:center">
-    <img src="/resources/images/screen01.png" />
-</div>
-
-<div style="text-align:center">
-    <img src="/resources/images/screen02.png" />
-</div>
-
-<div style="text-align:center">
-    <img src="/resources/images/screen03.png" />
-</div>
-
 ## Microservices port configuration
 
 | services  | http | http-dapr | grpc-dapr | metrics-dapr | daprd command |
