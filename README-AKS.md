@@ -92,7 +92,7 @@ echo "**********************************************************************"
 az aks create \
     --name $AKSClusterName \
     --resource-group $ResourceGroupName \
-    --node-count 1 \
+    --node-count 3 \
     --kubernetes-version $AKSK8sVersion \
     --service-principal $SP_APP_ID \
     --client-secret $SP_APP_PASSWORD \
