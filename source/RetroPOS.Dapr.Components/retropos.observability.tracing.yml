@@ -9,3 +9,4 @@ spec:
 scopes:
   - warehouse-service
   - audit-service
+  - durable-service

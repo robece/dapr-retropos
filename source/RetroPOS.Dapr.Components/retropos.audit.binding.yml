@@ -7,13 +7,13 @@ spec:
   type: bindings.azure.blobstorage
   metadata:
   - name: storageAccount
-    value: [REPLACE]
+    value: retroposstg01
   - name: storageAccessKey
     secretKeyRef:
-      name: [REPLACE]
-      key: [REPLACE]
+      name: retropos-audit-binding
+      key: retropos-audit-binding
   - name: container
-    value: [REPLACE]
+    value: audit
 scopes:
   - audit-service
 auth:

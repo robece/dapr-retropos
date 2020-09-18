@@ -7,15 +7,15 @@ spec:
   type: state.azure.cosmosdb
   metadata:
   - name: url
-    value: [REPLACE]
+    value: https://retroposcos01.documents.azure.com:443/
   - name: masterKey
     secretKeyRef:
-      name: [REPLACE]
-      key: [REPLACE]
+      name: retropos-warehouse-state
+      key: retropos-warehouse-state
   - name: database
-    value: [REPLACE]
+    value: retropos
   - name: collection
-    value: [REPLACE]
+    value: warehouse
 scopes:
   - warehouse-service
 auth:

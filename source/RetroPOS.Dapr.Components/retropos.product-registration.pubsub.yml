@@ -8,8 +8,8 @@ spec:
   metadata:
   - name: connectionString
     secretKeyRef:
-      name: [REPLACE]
-      key: [REPLACE]
+      name: retropos-product-registration-pubsub
+      key: retropos-product-registration-pubsub
 scopes:
   - warehouse-service
   - audit-service
