@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RetroPOS.Consumer.Api": {
+      "commandName": "Project",
+      "commandLineArgs": "host start --port 8000"
+    }
+  }
+}

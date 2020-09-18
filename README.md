@@ -4,9 +4,11 @@
     <img src="/resources/images/architecture.png" />
 </div>
 
-## Microservices port configuration
+## Microservices port configuration for debugging
 
 | services  | http | http-dapr | grpc-dapr | metrics-dapr | daprd command |
 |---|---|---|---|---|---|
-| RetroPOS.Warehouse.Api | 5000 | 5100 | 5200 | 5300 | daprd -app-id warehouse-service -components-path source\RetroPOS.Dapr.Components -app-port 5000 -dapr-grpc-port 5200 -dapr-http-port 5100 -metrics-port 5300 -log-level debug -config retropos.observability.tracing.yml |
-| RetroPOS.Audit.Api | 6000 | 6100 | 6200 | 6300 | daprd -app-id audit-service -components-path source\RetroPOS.Dapr.Components -app-port 6000 -dapr-grpc-port 6200 -dapr-http-port 6100 -metrics-port 6300 -log-level debug -config retropos.observability.tracing.yml |
+| RetroPOS.Warehouse.Api | 5000 | 5100 | 5200 | 5300 | daprd -app-id warehouse-service -components-path source\RetroPOS.Dapr.Components -app-port 5000 -dapr-grpc-port 5200 -dapr-http-port 5100 -metrics-port 5300 -log-level debug -config source\RetroPOS.Dapr.Components\retropos.observability.tracing.yml |
+| RetroPOS.Audit.Api | 6000 | 6100 | 6200 | 6300 | daprd -app-id audit-service -components-path source\RetroPOS.Dapr.Components -app-port 6000 -dapr-grpc-port 6200 -dapr-http-port 6100 -metrics-port 6300 -log-level debug -config source\RetroPOS.Dapr.Components\retropos.observability.tracing.yml |
+| RetroPOS.DurableOrchestration.Api | 7000 | 7100 | 7200 | 7300 | daprd -app-id durable-service -components-path source\RetroPOS.Dapr.Components -app-port 7000 -dapr-grpc-port 7200 -dapr-http-port 7100 -metrics-port 7300 -log-level debug -config source\RetroPOS.Dapr.Components\retropos.observability.tracing.yml |
+| RetroPOS.Consumer.Api | 8000 | 8100 | 8200 | 8300 | daprd -app-id consumer-service -components-path source\RetroPOS.Dapr.Components -app-port 8000 -dapr-grpc-port 8200 -dapr-http-port 8100 -metrics-port 8300 -log-level debug -config source\RetroPOS.Dapr.Components\retropos.observability.tracing.yml |

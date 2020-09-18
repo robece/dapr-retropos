@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroPOS.Warehouse.Api", "RetroPOS.Warehouse.Api\RetroPOS.Warehouse.Api.csproj", "{46E76F02-3322-4FAA-AE38-B6164A72792C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroPOS.DurableOrchestration.Api", "RetroPOS.DurableOrchestration.Api\RetroPOS.DurableOrchestration.Api.csproj", "{B4C67D15-857F-46E8-962A-404E701FC19B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroPOS.Consumer.Api", "RetroPOS.Consumer.Api\RetroPOS.Consumer.Api.csproj", "{7D5EA787-5940-4920-B24A-511CE4EBD05E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{46E76F02-3322-4FAA-AE38-B6164A72792C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46E76F02-3322-4FAA-AE38-B6164A72792C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46E76F02-3322-4FAA-AE38-B6164A72792C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4C67D15-857F-46E8-962A-404E701FC19B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4C67D15-857F-46E8-962A-404E701FC19B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4C67D15-857F-46E8-962A-404E701FC19B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4C67D15-857F-46E8-962A-404E701FC19B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D5EA787-5940-4920-B24A-511CE4EBD05E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D5EA787-5940-4920-B24A-511CE4EBD05E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D5EA787-5940-4920-B24A-511CE4EBD05E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D5EA787-5940-4920-B24A-511CE4EBD05E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +58,8 @@ Global
 		{E665A204-765D-408C-A6D9-5308783637CF} = {F26B0562-37ED-46A6-9444-A5975BB721B3}
 		{D63BC6BC-51DB-4085-A4D4-D8EF9F5EA741} = {1F1183DB-DD42-4F04-A7CF-825A1FEC0A53}
 		{46E76F02-3322-4FAA-AE38-B6164A72792C} = {F26B0562-37ED-46A6-9444-A5975BB721B3}
+		{B4C67D15-857F-46E8-962A-404E701FC19B} = {F26B0562-37ED-46A6-9444-A5975BB721B3}
+		{7D5EA787-5940-4920-B24A-511CE4EBD05E} = {F26B0562-37ED-46A6-9444-A5975BB721B3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CB3B17FB-5D1A-4FFA-9DDC-F8D886827A44}
