@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RetroPOS.Audit.Api;
 using RetroPOS.Warehouse.Api.Models;
 using System.Collections.Generic;
 using System.Net.Http;

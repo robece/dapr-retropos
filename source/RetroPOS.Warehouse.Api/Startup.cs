@@ -9,7 +9,7 @@ using RetroPOS.Warehouse.Api.Services;
 using System;
 using System.Net.Http;
 
-namespace RetroPOS.Product.Api
+namespace RetroPOS.Warehouse.Api
 {
     public class Startup
     {

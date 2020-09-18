@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace RetroPOS.Product.Api
+namespace RetroPOS.Warehouse.Api
 {
     public class Program
     {

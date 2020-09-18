@@ -4,7 +4,7 @@ using RetroPOS.Warehouse.Api.Models;
 using RetroPOS.Warehouse.Api.Services;
 using System.Threading.Tasks;
 
-namespace RetroPOS.Product.Api.Controllers
+namespace RetroPOS.Warehouse.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]

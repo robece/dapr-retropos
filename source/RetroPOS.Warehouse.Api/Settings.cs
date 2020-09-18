@@ -1,4 +1,4 @@
-﻿namespace RetroPOS.Audit.Api
+﻿namespace RetroPOS.Warehouse.Api
 {
     public class Settings
     {
