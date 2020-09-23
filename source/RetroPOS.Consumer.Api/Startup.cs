@@ -9,6 +9,11 @@ namespace RetroPOS.Consumer.Api
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AzureWebJobsStorage")))
+                throw new ArgumentNullException("AzureWebJobsStorage");
+
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ServiceBusConnectionString")))
+                throw new ArgumentNullException("ServiceBusConnectionString");
         }
     }
 }

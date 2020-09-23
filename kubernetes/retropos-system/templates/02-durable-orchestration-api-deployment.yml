@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.durableAPI.deployment.name }}
+  labels:
+    app: durable-orchestration-api
+    aadpodidbinding: {{ .Values.durableAPI.deployment.aadpodidbinding }}
+spec:
+  replicas: {{ .Values.durableAPI.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.durableAPI.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.durableAPI.deployment.name }}
+        aadpodidbinding: {{ .Values.durableAPI.deployment.aadpodidbinding }}
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "durable-orchestration-api"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+      - name: {{ .Values.durableAPI.deployment.containerName }}
+        image: {{ .Values.durableAPI.deployment.image.repository }}
+        ports:
+        - containerPort: 80
+        imagePullPolicy: {{ .Values.durableAPI.deployment.image.pullPolicy }}
+        env:
+          - name: WEBSITE_HOSTNAME
+            value: "localhost:80"
+          - name: AzureWebJobsStorage
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.durableAPI.deployment.env.azureWebJobsStorage }}"
+                key: "{{ .Values.durableAPI.deployment.env.azureWebJobsStorage }}"
+          - name: DurableBindingComponentName
+            value: "{{ .Values.durableAPI.deployment.env.durableBindingComponentName }}"
+          - name: MaxWorkloads
+            value: "{{ .Values.durableAPI.deployment.env.maxWorkloads }}"
+          - name: MaxRequestsPerWorkload
+            value: "{{ .Values.durableAPI.deployment.env.maxRequestsPerWorkload }}"
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ .Values.secretProviderClass.name }}

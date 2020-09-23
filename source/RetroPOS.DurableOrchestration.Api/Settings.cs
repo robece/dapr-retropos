@@ -2,9 +2,11 @@
 {
     public interface Settings
     {
-        public const int MAX_WORKLOADS = 5;
-        public const int MAX_REQUESTS_PER_WORKLOAD = 10;
-        public const string DURABLE_BINDING_COMPONENT_NAME = "retropos.durable-registration.binding";
-        public const string DAPR_SIDECAR_BASEURL = "http://127.0.0.1:7100";
+        public static string DAPR_HTTP_PORT = string.Empty;
+        public static string DAPR_GRPC_PORT = string.Empty;
+
+        public static int MAX_WORKLOADS = 0;
+        public static int MAX_REQUESTS_PER_WORKLOAD = 0;
+        public static string DURABLE_BINDING_COMPONENT_NAME = string.Empty;
     }
 }

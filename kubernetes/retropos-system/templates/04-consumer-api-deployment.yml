@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.consumerAPI.deployment.name }}
+  labels:
+    app: {{ .Values.consumerAPI.deployment.name }}
+    aadpodidbinding: {{ .Values.consumerAPI.deployment.aadpodidbinding }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.consumerAPI.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.consumerAPI.deployment.name }}
+        aadpodidbinding: {{ .Values.consumerAPI.deployment.aadpodidbinding }}
+    spec:
+      containers:
+      - name: {{ .Values.consumerAPI.deployment.containerName }}
+        image: {{ .Values.consumerAPI.deployment.image.repository }}
+        ports:
+        - containerPort: 80
+        imagePullPolicy: {{ .Values.consumerAPI.deployment.image.pullPolicy }}
+        env:
+          - name: WEBSITE_HOSTNAME
+            value: "localhost:80"
+          - name: AzureWebJobsStorage
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.consumerAPI.deployment.env.azureWebJobsStorage }}"
+                key: "{{ .Values.consumerAPI.deployment.env.azureWebJobsStorage }}"
+          - name: ServiceBusConnectionString
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.consumerAPI.deployment.env.serviceBusConnectionString }}"
+                key: "{{ .Values.consumerAPI.deployment.env.serviceBusConnectionString }}"
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ .Values.secretProviderClass.name }}

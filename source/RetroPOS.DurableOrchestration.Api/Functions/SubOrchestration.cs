@@ -45,7 +45,7 @@ namespace RetroPOS.DurableOrchestration.Api.Functions
 
                 var jsonPayload = JsonConvert.SerializeObject(payload);
                 var headers = new Dictionary<string, StringValues>() { { "Content-Type", "application/json" } };
-                DurableHttpRequest durableHttpRequest = new DurableHttpRequest(HttpMethod.Post, new Uri($"{Settings.DAPR_SIDECAR_BASEURL}/v1.0/bindings/{Settings.DURABLE_BINDING_COMPONENT_NAME}"), headers, jsonPayload);
+                DurableHttpRequest durableHttpRequest = new DurableHttpRequest(HttpMethod.Post, new Uri($"http://localhost:{Settings.DAPR_HTTP_PORT}/v1.0/bindings/{Settings.DURABLE_BINDING_COMPONENT_NAME}"), headers, jsonPayload);
 
                 tasks.Add(context.CallHttpAsync(durableHttpRequest).ContinueWith<DurableHttpResponse>((response) =>
                 {

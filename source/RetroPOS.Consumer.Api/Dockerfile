@@ -1,7 +1,7 @@
 ﻿FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS installer-env
 
-COPY . /src/retropos-consumer-api
-RUN cd /src/retropos-consumer-api && \
+COPY . /src/app
+RUN cd /src/app && \
     mkdir -p /home/site/wwwroot && \
     dotnet publish *.csproj --output /home/site/wwwroot
 
@@ -13,4 +13,4 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 
 COPY --from=installer-env ["/home/site/wwwroot", "/home/site/wwwroot"]
 
-EXPOSE 8000
+EXPOSE 80

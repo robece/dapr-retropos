@@ -1,0 +1,60 @@
+# Default values for retropos-system.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+secretProviderClass:
+  name: kubernetes.secretproviderclass.keyvault
+  keyvaultName: 
+  resourceGroup: 
+  subscriptionId: 
+  tenantId: 
+  databaseConnectionString: cosmosdb-connectionstring-retroposcos
+  databasePrimaryKey: cosmosdb-primarykey-retroposcos
+  serviceBusConnectionString: servicebus-connectionstring-retropossbns
+  storageConnectionString: storage-connectionstring-retroposstg
+
+durableAPI:
+  deployment:
+    replicas: 4
+    aadpodidbinding: kubernetes.azureidentity
+    name: durable-orchestration-api
+    containerName: durable-orchestration-api
+    image:
+      repository: 
+      pullPolicy: Always 
+    env:
+      azureWebJobsStorage: storage-connectionstring-retroposstg
+      durableBindingComponentName: dapr.binding.durable-registration
+      maxWorkloads: 1
+      maxRequestsPerWorkload: 500
+  service:
+    name: durable-orchestration-api
+    type: LoadBalancer
+
+consumerAPI:
+  deployment:
+    replicas: 1
+    aadpodidbinding: kubernetes.azureidentity
+    name: consumer-api
+    containerName: consumer-api
+    image:
+      repository: 
+      pullPolicy: Always 
+    env:
+      azureWebJobsStorage: storage-connectionstring-retroposstg
+      serviceBusConnectionString: servicebus-connectionstring-retropossbns
+  keda:
+    triggerAuthentication:
+      name: keda.triggerauthentication.consumer-api
+    scaledObject:
+      name: keda.scaledobject.consumer-api
+      deploymentName: consumer-api
+      pollingInterval: 5
+      coolDownPeriod: 0
+      minReplicaCount: 2
+      maxReplicaCount: 70
+      triggers:
+        type: azure-servicebus
+        queueName: durable-registration
+        messageCount: 5
+        authenticationRef: keda.triggerauthentication.consumer-api
