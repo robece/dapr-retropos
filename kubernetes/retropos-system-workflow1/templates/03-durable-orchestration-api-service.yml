@@ -9,6 +9,6 @@ spec:
     app: {{ .Values.durableAPI.service.name }}
   ports:
   - protocol: TCP
-    port: 7000
+    port: 5000
     targetPort: 80
   type: {{ .Values.durableAPI.service.type }}

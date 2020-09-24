@@ -12,7 +12,7 @@ $StorageAccountName = "$($DeploymentAlias)stg"
 $ServiceBusNamespaceName = "$($DeploymentAlias)sbns"
 $CosmosDBAccountName = "$($DeploymentAlias)cos"
 $CosmosDBDatabaseName = "$($DeploymentAlias)db"
-$CosmosDBContainerName = "$($DeploymentAlias)container"
+$CosmosDBContainerWorkflow1Name = "workflow1-consumer"
 
 # PRINT
 Write-Host "**********************************************************************"
@@ -133,7 +133,7 @@ az cosmosdb create -n $CosmosDBAccountName -g $ResourceGroupName --kind GlobalDo
 az cosmosdb sql database create -n $CosmosDBDatabaseName --account-name $CosmosDBAccountName -g $ResourceGroupName
 
 # create cosmosdb container
-az cosmosdb sql container create -g $ResourceGroupName -a $CosmosDBAccountName -d $CosmosDBDatabaseName -n $CosmosDBContainerName --partition-key-path "/partitionKey" --throughput "700"
+az cosmosdb sql container create -g $ResourceGroupName -a $CosmosDBAccountName -d $CosmosDBDatabaseName -n $CosmosDBContainerWorkflow1Name --partition-key-path "/partitionKey" --throughput "700"
 
 # get cosmosdb primary key
 $CosmosDBPrimaryKey=$(az cosmosdb keys list --type connection-strings -n $CosmosDBAccountName -g $ResourceGroupName --type keys --query "primaryMasterKey" -o tsv)

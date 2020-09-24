@@ -8,10 +8,10 @@ secretProviderClass:
   resourceGroup: 
   subscriptionId: 
   tenantId: 
-  databaseConnectionString: cosmosdb-connectionstring-retroposcos
-  databasePrimaryKey: cosmosdb-primarykey-retroposcos
-  serviceBusConnectionString: servicebus-connectionstring-retropossbns
-  storageConnectionString: storage-connectionstring-retroposstg
+  databaseConnectionString: 
+  databasePrimaryKey: 
+  serviceBusConnectionString: 
+  storageConnectionString: 
 
 durableAPI:
   deployment:
@@ -23,7 +23,7 @@ durableAPI:
       repository: 
       pullPolicy: Always 
     env:
-      azureWebJobsStorage: storage-connectionstring-retroposstg
+      azureWebJobsStorage: 
       durableBindingComponentName: dapr.binding.durable-registration
       maxWorkloads: 1
       maxRequestsPerWorkload: 500
@@ -41,8 +41,9 @@ consumerAPI:
       repository: 
       pullPolicy: Always 
     env:
-      azureWebJobsStorage: storage-connectionstring-retroposstg
-      serviceBusConnectionString: servicebus-connectionstring-retropossbns
+      azureWebJobsStorage: 
+      serviceBusConnectionString: 
+      consumerStateComponentName: dapr.state.consumer-state
   keda:
     triggerAuthentication:
       name: keda.triggerauthentication.consumer-api
@@ -51,8 +52,8 @@ consumerAPI:
       deploymentName: consumer-api
       pollingInterval: 5
       coolDownPeriod: 0
-      minReplicaCount: 2
-      maxReplicaCount: 70
+      minReplicaCount: 10
+      maxReplicaCount: 50
       triggers:
         type: azure-servicebus
         queueName: durable-registration

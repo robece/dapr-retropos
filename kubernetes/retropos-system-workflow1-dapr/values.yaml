@@ -9,5 +9,10 @@ dapr:
     clientId: 
   bindingDurableRegistration:
     name: dapr.binding.durable-registration
-    connectionString: servicebus-connectionstring-retropossbns
+    connectionString: 
     queueName: durable-registration
+  stateConsumerState:
+    name: dapr.state.consumer-state
+    url: 
+    masterKey: 
+    database: 

@@ -1,17 +1,72 @@
 # Dapr Retro Point of Sales
 
-<div style="text-align:center">
-    <img src="/resources/images/architecture.png" />
+## Summary
+
+1. Workflow - 1
+2. Workflow - 2
+3. Azure Deployment
+4. AAD Pod Identity
+
+## Workflow 1
+
+The purpose of this workflow it's to represent a Durable Orchestration Function that will be sending messages by using an output binding in the Dapr sidecar component, these messages will be stored in the Azure Service Bus Queue and eventually they will be consumed and processed by a ServiceBusTrigger Function to finally send the results to an storage in the Dapr sidecar component to be successfully saved.
+
+<div>
+    <img src="resources/images/architecture-workflow1.png" width="800" />
 </div>
 
-## Microservices port configuration for debugging
+In this scenario, some KEDA components were added, to horizontal autoscale the pods based on the amount of events received in the queue, this behavior will be only available in Kubernetes.
+
+Note: During the development of the project, I found some early adoption considerations, the first one, it's the lack of the support of Dapr queue trigger for Service Bus Queues, this forced to me to use the ServiceBusTrigger Function instead of a possible DaprQueueTrigger, this creates a direct dependency to the Service Bus resource, but once we have the Dapr queue trigger available for Functions, the resource will be fully adaptive to other non-Azure components, for further details about the Dapr Functions Extension project: https://github.com/dapr/azure-functions-extension.
+
+### Development configuration
+
+Requirements:
+
+- Visual Studio 2019 or Visual Studio Code
+- .NET Core 3.1
+- Azure Functions Extensions
+- Docker Desktop
+- Dapr
+
+For this scenario you will need to work with the following projects:
+
+- source/RetroPOS.DurableOrchestration.Api
+- source/RetroPOS.Consumer.Api
+
+Components required:
+
+- Output Binding (Dapr) - Azure Service Bus
+- State (Dapr) - Redis, CosmosDB or any other supported component by Dapr
+- State (Azure Functions) - Azure Storage
+
+Introductory documentation:
+
+- [Dapr overview](https://github.com/dapr/docs/tree/master/overview)
+- [Dapr building blocks](https://github.com/dapr/docs/tree/master/concepts#building-blocks)
+- [Setup Dapr development environment](https://github.com/dapr/dapr/blob/master/docs/development/setup-dapr-development-env.md)
+- [Launch dapr and your app](https://github.com/dapr/cli#launch-dapr-and-your-app)
+- [Application development with Visual Studio Code](https://github.com/dapr/docs/tree/master/howto/vscode-debugging-daprd)
+- [Bindings](https://github.com/dapr/docs/tree/master/concepts/bindings)
+- [Azure Service Bus Queues binding specification](https://github.com/dapr/docs/blob/master/reference/specs/bindings/servicebusqueues.md)
+- [State management](https://github.com/dapr/docs/tree/master/concepts/state-management)
+- [State API](https://github.com/dapr/docs/blob/master/reference/api/state_api.md)
+- [Supported state stores](https://github.com/dapr/components-contrib/tree/master/state)
+- [How to setup state stores](https://github.com/dapr/docs/tree/master/howto/setup-state-store)
+
+Microservices port configuration for debugging:
 
 | services  | http | http-dapr | grpc-dapr | metrics-dapr | daprd command |
 |---|---|---|---|---|---|
-| RetroPOS.Warehouse.Api | 5000 | 5100 | 5200 | 5300 | daprd -app-id warehouse-service -components-path source\RetroPOS.Dapr.Components -app-port 5000 -dapr-grpc-port 5200 -dapr-http-port 5100 -metrics-port 5300 -log-level debug -config source\RetroPOS.Dapr.Components\retropos.observability.tracing.yml |
-| RetroPOS.Audit.Api | 6000 | 6100 | 6200 | 6300 | daprd -app-id audit-service -components-path source\RetroPOS.Dapr.Components -app-port 6000 -dapr-grpc-port 6200 -dapr-http-port 6100 -metrics-port 6300 -log-level debug -config source\RetroPOS.Dapr.Components\retropos.observability.tracing.yml |
-| RetroPOS.DurableOrchestration.Api | 7000 | 7100 | 7200 | 7300 | daprd -app-id durable-orchestration-api -components-path kubernetes -app-port 7000 -dapr-grpc-port 7200 -dapr-http-port 7100 -metrics-port 7300 -log-level debug |
-| RetroPOS.Consumer.Api | 8000 | 8100 | 8200 | 8300 | daprd -app-id consumer-api -components-path kubernetes -app-port 8000 -dapr-grpc-port 8200 -dapr-http-port 8100 -metrics-port 8300 -log-level debug |
+| RetroPOS.DurableOrchestration.Api | 5000 | 5100 | 5200 | 5300 | daprd -app-id durable-orchestration-api -components-path source\RetroPOS.Dapr.Components -app-port 5000 -dapr-http-port 5100 -dapr-grpc-port 5200 -metrics-port 5300 -log-level debug |
+| RetroPOS.Consumer.Api | 6000 | 6100 | 6200 | 6300 | daprd -app-id consumer-api -components-path source\RetroPOS.Dapr.Components -app-port 6000 -dapr-http-port 6100 -dapr-grpc-port 6200 -metrics-port 6300 -log-level debug |
+
+
+
+
+
+
+
 
 ## Script for Azure resources deployment
 

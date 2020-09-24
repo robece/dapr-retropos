@@ -12,8 +12,8 @@ namespace RetroPOS.DurableOrchestration.Api
         {
             builder.Services.AddHttpClient();
 
-            Settings.DAPR_HTTP_PORT = (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DAPR_HTTP_PORT"))) ? "7100" : Environment.GetEnvironmentVariable("DAPR_HTTP_PORT");
-            Settings.DAPR_GRPC_PORT = (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DAPR_GRPC_PORT"))) ? "7200" : Environment.GetEnvironmentVariable("DAPR_GRPC_PORT");
+            Settings.DAPR_HTTP_PORT = (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DAPR_HTTP_PORT"))) ? "5100" : Environment.GetEnvironmentVariable("DAPR_HTTP_PORT");
+            Settings.DAPR_GRPC_PORT = (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DAPR_GRPC_PORT"))) ? "5200" : Environment.GetEnvironmentVariable("DAPR_GRPC_PORT");
 
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AzureWebJobsStorage")))
                 throw new ArgumentNullException("AzureWebJobsStorage");

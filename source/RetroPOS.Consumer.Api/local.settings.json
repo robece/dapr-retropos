@@ -3,6 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "",
     "ServiceBusConnectionString": "",
+    "ConsumerStateComponentName": "",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet"
   }
 }

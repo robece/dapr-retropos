@@ -31,15 +31,15 @@ namespace RetroPOS.DurableOrchestration.Api.Functions
 
             for (int i = 0; i < maxRequestsPerWorkload; i++)
             {
-                var entity = new
+                var entity = new Product()
                 {
-                    productId = i,
-                    productDescription = $"workload: {enumerator} - index: {i}"
+                    ProductId = i.ToString(),
+                    ProductDescription = $"workload: {enumerator} - index: {i}"
                 };
-
+                
                 var payload = new
                 {
-                    data = JsonConvert.SerializeObject(entity),
+                    data = entity,
                     operation = "create"
                 };
 
