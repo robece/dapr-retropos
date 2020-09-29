@@ -15,7 +15,7 @@ secretProviderClass:
 
 exposedAPI:
   deployment:
-    replicas: 20
+    replicas: 2
     aadpodidbinding: kubernetes.azureidentity
     name: exposed-api
     dapr:
@@ -39,10 +39,10 @@ exposedAPI:
     type: LoadBalancer
   autoscaling:
     name: exposed-api
-    minReplicas: 10
+    minReplicas: 2
     maxReplicas: 50
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 70
+    targetCPUUtilizationPercentage: 40
+    targetMemoryUtilizationPercentage: 40
 
 consumerAPI:
   deployment:
