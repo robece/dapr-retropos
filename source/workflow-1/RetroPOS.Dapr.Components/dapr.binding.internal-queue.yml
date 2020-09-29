@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: dapr.binding.internal-queue
+spec:
+  type: bindings.azure.servicebusqueues
+  metadata:
+  - name: connectionString
+    value: "REPLACE"
+  - name: queueName
+    value: "REPLACE"
+scopes:
+  - exposed-api

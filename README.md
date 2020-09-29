@@ -8,6 +8,7 @@
     - Components required
     - Introductory documentation
     - Microservices port configuration for debugging
+    - Applications to Container Registry
     - Kubernetes resources
 2. Azure deployment
     - Azure resources deployment script
@@ -37,6 +38,7 @@ Note: During the development of the project, I found some early adoption conside
 - Azure Functions Extensions
 - Docker Desktop
 - Dapr
+- HELM
 
 ### Code projects
 
@@ -72,12 +74,82 @@ Note: During the development of the project, I found some early adoption conside
 | RetroPOS.ExposedService.Api | 5000 | 5100 | 5200 | 5300 | daprd -app-id exposed-api -components-path source\workflow-1\RetroPOS.Dapr.Components -app-port 5000 -dapr-http-port 5100 -dapr-grpc-port 5200 -metrics-port 5300 -log-level debug -config source\workflow-1\RetroPOS.Dapr.Components\dapr.tracing.yml |
 | RetroPOS.Consumer.Api | 6000 | 6100 | 6200 | 6300 | daprd -app-id consumer-api -components-path source\workflow-1\RetroPOS.Dapr.Components -app-port 6000 -dapr-http-port 6100 -dapr-grpc-port 6200 -metrics-port 6300 -log-level debug -config source\workflow-1\RetroPOS.Dapr.Components\dapr.tracing.yml |
 
+### Applications to Container Registry
+
+1. Connect to Azure Container Registry via Azure CLI.
+
+    ```bash
+    az login
+    ```
+
+2. Build, tag and push image to Azure Container Registry.
+
+    Exposed Service API:
+
+    ```bash
+    az acr build -f source/workflow-1/RetroPOS.ExposedService.Api/Dockerfile -t [name of registry].[registry host]/exposed-api:1.0.0 -r [name of registry] source/workflow-1/RetroPOS.ExposedService.Api/
+    ```
+
+    Consumer API:
+
+    ```bash
+    az acr build -f source/workflow-1/RetroPOS.Consumer.Api/Dockerfile -t [name of registry].[registry host]/consumer-api:1.0.0 -r [name of registry] source/workflow-1/RetroPOS.Consumer.Api/
+    ```
+
 ### Kubernetes resources
 
 1. Create the retropos-workflow-1 namespace.
 
     ```bash
     kubectl create ns retropos-workflow-1
+    ```
+
+2. HELM Charts.
+
+    The HELM chart deployment are based by the Azure deployment powershell scripts, in case you want to use other Dapr component you will need to modify the HELM chart. 
+
+    Chart: retropos-system-workflow-1-dapr
+    
+    Description: HELM chart to deploy all the Dapr components used for Workflow 1
+
+    Parameters:
+
+    - dapr.secretStore.vaultName - name of the keyvault resource
+    - dapr.secretStore.clientId - managed identity client id
+    - dapr.bindingInternalQueue.connectionString - service bus connection string secret on keyvault
+    - dapr.stateConsumerState.url - cosmosdb url
+    - dapr.stateConsumerState.masterKey - cosmosdb primary key secret on keyvault
+    - dapr.stateConsumerState.database - cosmosdb databasename
+
+    Example:
+
+    ```bash
+    helm upgrade --install retropos-system-workflow-1-dapr kubernetes\retropos-system-workflow-1-dapr --namespace retropos-workflow-1 --set dapr.secretStore.vaultName=retroposkv --set dapr.secretStore.clientId=00000000-0000-0000-0000-000000000000 --set dapr.bindingInternalQueue.connectionString=servicebus-connectionstring-retropossbns --set dapr.stateConsumerState.url=https://retroposcos.documents.azure.com:443/ --set dapr.stateConsumerState.masterKey=cosmosdb-primarykey-retroposcos --set dapr.stateConsumerState.database=retroposdb
+    ```
+
+    Chart: retropos-system-workflow-1
+    
+    Description: HELM chart to deploy all the solution components used for Workflow 1
+
+    Parameters:
+
+    - secretProviderClass.keyvaultName - name of the keyvault resource
+    - secretProviderClass.resourceGroup - name of the resource group
+    - secretProviderClass.subscriptionId - subscription identifier
+    - secretProviderClass.tenantId - tenant identifier
+    - secretProviderClass.databaseConnectionString - cosmosdb connection string secret on keyvault
+    - secretProviderClass.databasePrimaryKey - cosmosdb primary key secret on keyvault
+    - secretProviderClass.storageConnectionString - storage connection string secret on keyvault
+    - secretProviderClass.serviceBusConnectionString - service bus connection string secret on keyvault
+    - exposedAPI.deployment.image.repository - repository, image and tag from the exposed service api
+    - consumerAPI.deployment.image.repository - repository, image and tag from the consumer api
+    - consumerAPI.deployment.env.azureWebJobsStorage - storage connection string secret on keyvault
+    - consumerAPI.deployment.env.serviceBusConnectionString - service bus connection string secret on keyvault
+
+    Example:
+
+    ```bash
+    helm upgrade --install retropos-system-workflow-1 kubernetes\retropos-system-workflow-1 --namespace retropos-workflow-1 --set secretProviderClass.keyvaultName=retroposkv --set secretProviderClass.resourceGroup=retropos-group --set secretProviderClass.subscriptionId=00000000-0000-0000-0000-000000000000 --set secretProviderClass.tenantId=00000000-0000-0000-0000-000000000000 --set secretProviderClass.databaseConnectionString=cosmosdb-connectionstring-retroposcos --set secretProviderClass.databasePrimaryKey=cosmosdb-primarykey-retroposcos --set secretProviderClass.serviceBusConnectionString=servicebus-connectionstring-retropossbns --set secretProviderClass.storageConnectionString=storage-connectionstring-retroposstg --set exposedAPI.deployment.image.repository=retroposcr.azurecr.io/exposed-api:1.0.0 --set consumerAPI.deployment.image.repository=retroposcr.azurecr.io/consumer-api:1.0.0 --set consumerAPI.deployment.env.azureWebJobsStorage=storage-connectionstring-retroposstg --set consumerAPI.deployment.env.serviceBusConnectionString=servicebus-connectionstring-retropossbns
     ```
 
 ## Azure Deployment

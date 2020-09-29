@@ -1,0 +1,17 @@
+﻿apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: dapr.state.consumer-state
+spec:
+  type: state.azure.cosmosdb
+  metadata:
+  - name: url
+    value: "REPLACE"
+  - name: masterKey
+    value: "REPLACE"
+  - name: database
+    value: "REPLACE"
+  - name: collection
+    value: "REPLACE"
+scopes:
+  - consumer-api
