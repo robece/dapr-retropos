@@ -4,46 +4,69 @@
 
 secretProviderClass:
   name: kubernetes.secretproviderclass.keyvault
-  keyvaultName: 
-  resourceGroup: 
-  subscriptionId: 
-  tenantId: 
-  databaseConnectionString: 
-  databasePrimaryKey: 
-  serviceBusConnectionString: 
-  storageConnectionString: 
+  keyvaultName:
+  resourceGroup:
+  subscriptionId:
+  tenantId:
+  databaseConnectionString:
+  databasePrimaryKey:
+  serviceBusConnectionString:
+  storageConnectionString:
 
-durableAPI:
+exposedAPI:
   deployment:
-    replicas: 4
+    replicas: 20
     aadpodidbinding: kubernetes.azureidentity
-    name: durable-orchestration-api
-    containerName: durable-orchestration-api
+    name: exposed-api
+    dapr:
+      name: exposed-api
+      config: dapr.tracing
+    containerName: exposed-api
     image:
-      repository: 
+      repository:
       pullPolicy: Always 
     env:
-      azureWebJobsStorage: 
-      durableBindingComponentName: dapr.binding.durable-registration
-      maxWorkloads: 1
-      maxRequestsPerWorkload: 500
+      outputBindingComponentName: dapr.binding.internal-queue
+  resources:
+    requests:
+      memory: "100Mi"
+      cpu: "100m"
+    limits:
+      memory: "150Mi"
+      cpu: "150m"
   service:
-    name: durable-orchestration-api
+    name: exposed-api
     type: LoadBalancer
+  autoscaling:
+    name: exposed-api
+    minReplicas: 10
+    maxReplicas: 50
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 70
 
 consumerAPI:
   deployment:
-    replicas: 1
+    replicas: 5
     aadpodidbinding: kubernetes.azureidentity
     name: consumer-api
+    dapr:
+      name: consumer-api
+      config: dapr.tracing
     containerName: consumer-api
     image:
-      repository: 
-      pullPolicy: Always 
+      repository:
+      pullPolicy: Always
     env:
-      azureWebJobsStorage: 
-      serviceBusConnectionString: 
+      azureWebJobsStorage:
+      serviceBusConnectionString:
       consumerStateComponentName: dapr.state.consumer-state
+    resources:
+      requests:
+        memory: "200Mi"
+        cpu: "150m"
+      limits:
+        memory: "300Mi"
+        cpu: "200m"
   keda:
     triggerAuthentication:
       name: keda.triggerauthentication.consumer-api
@@ -52,10 +75,10 @@ consumerAPI:
       deploymentName: consumer-api
       pollingInterval: 5
       coolDownPeriod: 0
-      minReplicaCount: 10
-      maxReplicaCount: 50
+      minReplicaCount: 5
+      maxReplicaCount: 20
       triggers:
         type: azure-servicebus
-        queueName: durable-registration
+        queueName: internal-queue
         messageCount: 5
         authenticationRef: keda.triggerauthentication.consumer-api

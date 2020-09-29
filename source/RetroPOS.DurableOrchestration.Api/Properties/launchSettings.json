@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "RetroPOS.DurableOrchestration.Api": {
-      "commandName": "Project",
-      "commandLineArgs": "host start --port 5000"
-    }
-  }
-}

@@ -5,14 +5,18 @@
 dapr:
   secretStore:
     name: dapr.secretstore
-    vaultName: 
-    clientId: 
-  bindingDurableRegistration:
-    name: dapr.binding.durable-registration
-    connectionString: 
-    queueName: durable-registration
+    vaultName:
+    clientId:
+  bindingInternalQueue:
+    name: dapr.binding.internal-queue
+    connectionString:
+    queueName: internal-queue
   stateConsumerState:
     name: dapr.state.consumer-state
-    url: 
-    masterKey: 
-    database: 
+    url:
+    masterKey:
+    database:
+  tracing:
+    name: dapr.tracing
+  exporter:
+    name: dapr.exporter

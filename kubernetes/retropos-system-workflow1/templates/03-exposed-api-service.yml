@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.exposedAPI.service.name }}
+  labels:
+    app: {{ .Values.exposedAPI.service.name }}
+spec:
+  selector:
+    app: {{ .Values.exposedAPI.service.name }}
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 80
+  type: {{ .Values.exposedAPI.service.type }}

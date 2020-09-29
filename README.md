@@ -1,27 +1,36 @@
-# Dapr Retro Point of Sales
+# Dapr Retro Point of Sales (Backend Workflows)
 
 ## Summary
 
-1. Workflow - 1
-2. Workflow - 2
-3. Azure Deployment
-4. AAD Pod Identity
+1. Workflow 1
+    - Requirements
+    - Code projects
+    - Components required
+    - Introductory documentation
+    - Microservices port configuration for debugging
+    - Kubernetes resources
+2. Azure deployment
+    - Azure resources deployment script
+    - Azure resources removal script
+3. Finishing Kubernetes setup
+    - CSI Secrets Store Provider and AAD Pod Identity configuration
+    - DAPR configuration
+    - KEDA configuration
+    - Zipkin configuration
 
 ## Workflow 1
 
-The purpose of this workflow it's to represent a Durable Orchestration Function that will be sending messages by using an output binding in the Dapr sidecar component, these messages will be stored in the Azure Service Bus Queue and eventually they will be consumed and processed by a ServiceBusTrigger Function to finally send the results to an storage in the Dapr sidecar component to be successfully saved.
+The purpose of this workflow it's to represent an exposed API that will be receiving messages from an external worker service, these messages will be stored in the Azure Service Bus Queue and eventually they will be consumed and processed by a ServiceBusTrigger Function to finally send the results to an storage in the Dapr sidecar component to be successfully saved.
 
 <div>
-    <img src="resources/images/architecture-workflow1.png" width="800" />
+    <img src="resources/images/architecture-workflow-1.png" width="800" />
 </div>
 
 In this scenario, some KEDA components were added, to horizontal autoscale the pods based on the amount of events received in the queue, this behavior will be only available in Kubernetes.
 
 Note: During the development of the project, I found some early adoption considerations, the first one, it's the lack of the support of Dapr queue trigger for Service Bus Queues, this forced to me to use the ServiceBusTrigger Function instead of a possible DaprQueueTrigger, this creates a direct dependency to the Service Bus resource, but once we have the Dapr queue trigger available for Functions, the resource will be fully adaptive to other non-Azure components, for further details about the Dapr Functions Extension project: https://github.com/dapr/azure-functions-extension.
 
-### Development configuration
-
-Requirements:
+### Requirements
 
 - Visual Studio 2019 or Visual Studio Code
 - .NET Core 3.1
@@ -29,18 +38,19 @@ Requirements:
 - Docker Desktop
 - Dapr
 
-For this scenario you will need to work with the following projects:
+### Code projects
 
-- source/RetroPOS.DurableOrchestration.Api
-- source/RetroPOS.Consumer.Api
+- source/workflow-1/RetroPOS.ExposedService.Api
+- source/workflow-1/RetroPOS.ExposedService.WorkerService
+- source/workflow-1/RetroPOS.Consumer.Api
 
-Components required:
+### Components required
 
 - Output Binding (Dapr) - Azure Service Bus
 - State (Dapr) - Redis, CosmosDB or any other supported component by Dapr
-- State (Azure Functions) - Azure Storage
+- Distributed Tracing (Dapr) - Zipkin, App Insights or any other supported component by Dapr
 
-Introductory documentation:
+### Introductory documentation
 
 - [Dapr overview](https://github.com/dapr/docs/tree/master/overview)
 - [Dapr building blocks](https://github.com/dapr/docs/tree/master/concepts#building-blocks)
@@ -53,22 +63,26 @@ Introductory documentation:
 - [State API](https://github.com/dapr/docs/blob/master/reference/api/state_api.md)
 - [Supported state stores](https://github.com/dapr/components-contrib/tree/master/state)
 - [How to setup state stores](https://github.com/dapr/docs/tree/master/howto/setup-state-store)
+- [Diagnose with tracing](https://github.com/dapr/docs/tree/master/howto/diagnose-with-tracing)
 
-Microservices port configuration for debugging:
+### Microservices port configuration for debugging
 
 | services  | http | http-dapr | grpc-dapr | metrics-dapr | daprd command |
 |---|---|---|---|---|---|
-| RetroPOS.DurableOrchestration.Api | 5000 | 5100 | 5200 | 5300 | daprd -app-id durable-orchestration-api -components-path source\RetroPOS.Dapr.Components -app-port 5000 -dapr-http-port 5100 -dapr-grpc-port 5200 -metrics-port 5300 -log-level debug |
-| RetroPOS.Consumer.Api | 6000 | 6100 | 6200 | 6300 | daprd -app-id consumer-api -components-path source\RetroPOS.Dapr.Components -app-port 6000 -dapr-http-port 6100 -dapr-grpc-port 6200 -metrics-port 6300 -log-level debug |
+| RetroPOS.ExposedService.Api | 5000 | 5100 | 5200 | 5300 | daprd -app-id exposed-api -components-path source\workflow-1\RetroPOS.Dapr.Components -app-port 5000 -dapr-http-port 5100 -dapr-grpc-port 5200 -metrics-port 5300 -log-level debug -config source\workflow-1\RetroPOS.Dapr.Components\dapr.tracing.yml |
+| RetroPOS.Consumer.Api | 6000 | 6100 | 6200 | 6300 | daprd -app-id consumer-api -components-path source\workflow-1\RetroPOS.Dapr.Components -app-port 6000 -dapr-http-port 6100 -dapr-grpc-port 6200 -metrics-port 6300 -log-level debug -config source\workflow-1\RetroPOS.Dapr.Components\dapr.tracing.yml |
 
+### Kubernetes resources
 
+1. Create the retropos-workflow-1 namespace.
 
+    ```bash
+    kubectl create ns retropos-workflow-1
+    ```
 
+## Azure Deployment
 
-
-
-
-## Script for Azure resources deployment
+### Script for Azure resources deployment
 
 Run the script: powershell/azure-deployment.ps1 to deploy the Azure resources.
 
@@ -78,7 +92,7 @@ Run the script: powershell/azure-deployment.ps1 to deploy the Azure resources.
 
 Note: At the end of the script execution there is a call to action to save the information that will be used in the future, be sure keep safe that information.
 
-## Script for Azure resources removal
+### Script for Azure resources removal
 
 Run the script: powershell/azure-removal.ps1 to remove the Azure resources.
     
@@ -86,7 +100,9 @@ Run the script: powershell/azure-removal.ps1 to remove the Azure resources.
 .\powershell\azure-removal.ps1
 ```
 
-## Finishing the AAD Pod Identity configuration on Kubernetes
+## Finishing Kubernetes setup
+
+### CSI Secrets Store Provider and AAD Pod Identity configuration
 
 Once the Azure services has been deployed, Azure Kubernetes Service is now configured with Managed Identity service with the grants to access the Container Registry and Azure Key Vault. 
 
@@ -110,9 +126,7 @@ Steps:
     
     ```bash
     helm repo add csi-secrets-store-provider-azure https://raw.githubusercontent.com/Azure/secrets-store-csi-driver-provider-azure/master/charts
-
     kubectl create ns csi-driver
-
     helm install csi-azure csi-secrets-store-provider-azure/csi-secrets-store-provider-azure --namespace csi-driver
     ```
 
@@ -153,13 +167,40 @@ Steps:
     kubectl apply -f kubernetes/aad-pod-identity/kubernetes.azureidentitybinding.yml
     ```
 
-## Deploying the applications
+### DAPR configuration
 
-1. Create the retropos-system namespace.
+Before continue I strongly recommend this lecture about [Dapr environment setup](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md).
 
-    ```bash
-    kubectl create ns retropos-system
-    ```
+Once you have properly installed Dapr in your development environment, deploy Dapr in your cluster.
+
+```bash
+dapr init --kubernetes
+```
+
+### KEDA configuration
+
+Before continue I strongly recommend this lecture about [KEDA concepts](https://keda.sh/docs/2.0/concepts/) and [deploying KEDA](https://keda.sh/docs/2.0/deploy/).
+
+Deploy KEDA on the cluster.
+
+```bash
+helm repo add kedacore https://kedacore.github.io/charts
+helm repo update
+kubectl create namespace keda
+helm install keda kedacore/keda --namespace keda
+```
+
+### Zipkin configuration
+
+Before continue I strongly recommend this lecture about [Zipkin concepts](https://zipkin.io/) and [Dapr diagnose with tracing](https://github.com/dapr/docs/tree/master/howto/diagnose-with-tracing).
+
+Deploy Zipkin on the cluster.
+
+```bash
+kubectl create ns exporters
+kubectl create deployment zipkin --image openzipkin/zipkin -n exporters
+kubectl expose deployment zipkin --type LoadBalancer --port 9411 -n exporters
+```
 
 ## Credits
 

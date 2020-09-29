@@ -1,0 +1,17 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{ .Values.dapr.bindingInternalQueue.name }}
+spec:
+  type: bindings.azure.servicebusqueues
+  metadata:
+  - name: connectionString
+    secretKeyRef:
+      name: {{ .Values.dapr.bindingInternalQueue.connectionString }}
+      key: {{ .Values.dapr.bindingInternalQueue.connectionString }}
+  - name: queueName
+    value: "{{ .Values.dapr.bindingInternalQueue.queueName }}"
+scopes:
+  - exposed-api
+auth:
+  secretStore: {{ .Values.dapr.secretStore.name }}

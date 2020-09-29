@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "RetroPOS.ExposedService.WorkserService": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

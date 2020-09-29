@@ -110,7 +110,7 @@ Write-Host ""
 Write-Host " A namespace provides a scoping container for addressing Service Bus."
 Write-Host "**********************************************************************"
 
-az servicebus namespace create -n $ServiceBusNamespaceName -g $ResourceGroupName -l $Location --sku Standard
+az servicebus namespace create -n $ServiceBusNamespaceName -g $ResourceGroupName -l $Location --sku Premium
 $ServiceBusPrimaryConnectionString=$(az servicebus namespace authorization-rule keys list -g $ResourceGroupName --namespace-name $ServiceBusNamespaceName --name RootManageSharedAccessKey --query primaryConnectionString --output tsv)
 
 # adding service bus connection string secret
@@ -127,13 +127,16 @@ Write-Host " app development."
 Write-Host "**********************************************************************"
 
 # create cosmosdb account
-az cosmosdb create -n $CosmosDBAccountName -g $ResourceGroupName --kind GlobalDocumentDB
+az cosmosdb create -n $CosmosDBAccountName -g $ResourceGroupName --kind GlobalDocumentDB --default-consistency-level Strong
 
 # create cosmosdb database
 az cosmosdb sql database create -n $CosmosDBDatabaseName --account-name $CosmosDBAccountName -g $ResourceGroupName
 
 # create cosmosdb container
 az cosmosdb sql container create -g $ResourceGroupName -a $CosmosDBAccountName -d $CosmosDBDatabaseName -n $CosmosDBContainerWorkflow1Name --partition-key-path "/partitionKey" --throughput "700"
+
+# migrate cosmosdb throughput to autoscale
+az cosmosdb sql container throughput migrate -g $ResourceGroupName -a $CosmosDBAccountName -d $CosmosDBDatabaseName -n $CosmosDBContainerWorkflow1Name -t autoscale
 
 # get cosmosdb primary key
 $CosmosDBPrimaryKey=$(az cosmosdb keys list --type connection-strings -n $CosmosDBAccountName -g $ResourceGroupName --type keys --query "primaryMasterKey" -o tsv)
