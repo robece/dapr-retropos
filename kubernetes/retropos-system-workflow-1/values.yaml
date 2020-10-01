@@ -4,7 +4,7 @@
 
 secretProviderClass:
   name: kubernetes.secretproviderclass.keyvault
-  keyvaultName:
+  keyVaultName:
   resourceGroup:
   subscriptionId:
   tenantId:
