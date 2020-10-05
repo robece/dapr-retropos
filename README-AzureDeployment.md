@@ -2,23 +2,49 @@
 
 ## Summary
 
-1. Azure resources deployment script
-2. Azure resources removal script
+1. [Azure resources deployment script](#azure-resources-deployment-script)
+2. [Azure resources removal script](#azure-resources-removal-script)
 
-## Script for Azure resources deployment
+## Azure resources deployment script
 
 Run the script: powershell/azure-deployment.ps1 to deploy the Azure resources.
 
-```bash
+```
 .\powershell\azure-deployment.ps1
 ```
 
 Note: At the end of the script execution there is a call to action to save the information that will be used in the future, be sure keep safe that information.
 
-## Script for Azure resources removal
+```
+****************************CALL TO ACTION****************************
+
+ Deployment alias: 
+ Resource group: 
+ Location: 
+ Cluster name: 
+ Kubernetes version: 
+ Managed identity name: 
+ Managed identity id: 
+ Managed identity client id: 
+ Container registry: 
+ Key vault name: 
+ Storage name: 
+ Storage connection string: 
+ Service bus namespace name: 
+ Service bus connection string: 
+ CosmosDB account name: 
+ CosmosDB database name: 
+ CosmosDB container name:
+ CosmosDB primary key: 
+ CosmosDB connection string: 
+
+****************************CALL TO ACTION****************************
+```
+
+## Azure resources removal script
 
 Run the script: powershell/azure-removal.ps1 to remove the Azure resources.
     
-```bash
+```
 .\powershell\azure-removal.ps1
 ```

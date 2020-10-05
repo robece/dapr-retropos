@@ -1,16 +1,15 @@
-# Workflow 1 - API to Queue to Function
+# Workflow 1 - API to Queue / Queue to Function
 
 ## Summary
 
-1. Description
-2. Requirements
-3. Code projects
-4. Components required
-5. Introductory documentation
-6. Microservices port configuration for debugging
-7. Applications to Container Registry
-8. Kubernetes resources
-9. ¡Let's apply some stress to this!
+1. [Description](#description)
+2. [Code projects](#code-projects)
+3. [Components required](#components-required)
+4. [Introductory documentation](#introductory-documentation)
+5. [Microservices port configuration for debugging](#microservices-port-configuration-for-debugging)
+6. [Applications to Container Registry](#applications-to-container-registry)
+7. [Kubernetes resources](#kubernetes-resources)
+8. [Load test](#load-test)
 
 ## Description
 
@@ -62,7 +61,7 @@ Note: During the development of the project, I found some early adoption conside
 
 1. Connect to Azure Container Registry via Azure CLI.
 
-    ```bash
+    ```
     az login
     ```
 
@@ -70,13 +69,13 @@ Note: During the development of the project, I found some early adoption conside
 
     Exposed Service API:
 
-    ```bash
+    ```
     az acr build -f source/workflow-1/RetroPOS.ExposedService.Api/Dockerfile -t [name of registry].[registry host]/exposed-api:1.0.0 -r [name of registry] source/workflow-1/RetroPOS.ExposedService.Api/
     ```
 
     Consumer API:
 
-    ```bash
+    ```
     az acr build -f source/workflow-1/RetroPOS.Consumer.Api/Dockerfile -t [name of registry].[registry host]/consumer-api:1.0.0 -r [name of registry] source/workflow-1/RetroPOS.Consumer.Api/
     ```
 
@@ -84,7 +83,7 @@ Note: During the development of the project, I found some early adoption conside
 
 1. Create the retropos-workflow-1 namespace.
 
-    ```bash
+    ```
     kubectl create ns retropos-workflow-1
     ```
 
@@ -107,7 +106,7 @@ Note: During the development of the project, I found some early adoption conside
 
     <b>Example of helm chart installation:</b>
 
-    ```bash
+    ```
     helm upgrade --install retropos-system-workflow-1-dapr kubernetes\retropos-system-workflow-1-dapr 
                  --namespace retropos-workflow-1 
                  --set dapr.secretStore.vaultName=retroposkv 
@@ -132,14 +131,21 @@ Note: During the development of the project, I found some early adoption conside
     | secretProviderClass.databasePrimaryKey | cosmosdb primary key secret on key vault |
     | secretProviderClass.storageConnectionString | storage connection string secret on key vault |
     | secretProviderClass.serviceBusConnectionString | service bus connection string secret on key vault |
+    | exposedAPI.deployment.replicas | exposed service api pod replicas |
     | exposedAPI.deployment.image.repository | exposed service api repository, image and tag |
+    | exposedAPI.autoscaling.minReplicas | exposed service api autoscaler pod min replicas |
+    | exposedAPI.autoscaling.maxReplicas | exposed service api autoscaler pod max replicas |
+    | consumerAPI.deployment.replicas | consumer service api pod replicas |
     | consumerAPI.deployment.image.repository | consumer api repository, image and tag |
     | consumerAPI.deployment.env.azureWebJobsStorage | storage connection string secret on key vault |
     | consumerAPI.deployment.env.serviceBusConnectionString | service bus connection string secret on key vault |
+    | consumerAPI.keda.scaledObject.minReplicaCount | consumer service api keda min pod replicas |
+    | consumerAPI.keda.scaledObject.maxReplicaCount | consumer service api keda max pod replicas |
+    | consumerAPI.keda.scaledObject.triggers.messageCount | consumer service api keda message count |
 
     <b>Example of helm chart installation:</b>
 
-    ```bash
+    ```
     helm upgrade --install retropos-system-workflow-1 kubernetes\retropos-system-workflow-1 
                  --namespace retropos-workflow-1 
                  --set secretProviderClass.keyVaultName=retroposkv 
@@ -150,12 +156,19 @@ Note: During the development of the project, I found some early adoption conside
                  --set secretProviderClass.databasePrimaryKey=cosmosdb-primarykey-retroposcos 
                  --set secretProviderClass.serviceBusConnectionString=servicebus-connectionstring-retropossbns 
                  --set secretProviderClass.storageConnectionString=storage-connectionstring-retroposstg 
+                 --set exposedAPI.deployment.replicas=2 
                  --set exposedAPI.deployment.image.repository=retroposcr.azurecr.io/exposed-api:1.0.0 
+                 --set exposedAPI.autoscaling.minReplicas=2 
+                 --set exposedAPI.autoscaling.maxReplicas=20 
+                 --set consumerAPI.deployment.replicas=5 
                  --set consumerAPI.deployment.image.repository=retroposcr.azurecr.io/consumer-api:1.0.0 
                  --set consumerAPI.deployment.env.azureWebJobsStorage=storage-connectionstring-retroposstg 
-                 --set consumerAPI.deployment.env.serviceBusConnectionString=servicebus-connectionstring-retropossbns
+                 --set consumerAPI.deployment.env.serviceBusConnectionString=servicebus-connectionstring-retropossbns 
+                 --set consumerAPI.keda.scaledObject.minReplicaCount=5 
+                 --set consumerAPI.keda.scaledObject.maxReplicaCount=20 
+                 --set consumerAPI.keda.scaledObject.triggers.messageCount=2
     ```
 
-## Load Tests
+## Load test
 
 This is an important consideration in the workflow design to validate the stability, integrity and resilence of each one of the components, because the more components we have the more points of failures we need to validate. You can perform this by using the RetroPOS.ExposedService.WorkerService project, this is console application that can run in the development environment to hit our cluster or we can use a set of virtual machines working together to amplify the volumetry of requests.

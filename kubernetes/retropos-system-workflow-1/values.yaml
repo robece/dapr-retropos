@@ -80,5 +80,5 @@ consumerAPI:
       triggers:
         type: azure-servicebus
         queueName: internal-queue
-        messageCount: 5
+        messageCount: 2
         authenticationRef: keda.triggerauthentication.consumer-api

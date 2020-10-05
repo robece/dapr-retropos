@@ -27,7 +27,8 @@ These set of workflows intents to be a part of a production ready architecture, 
     - Deploy or remove all resources used by the solution with these scripts.
 2. [Kubernetes Service Setup](README-KubernetesSetup.md)
     - Configure all the Kubernetes Service components used by the solution.
-3. [Workflow 1 - API to Queue to Function](README-Workflow-1.md)
+3. [Workflow 1 - API to Queue / Queue to Function](README-Workflow-1.md)
+
     | diagram  | description |
     |---|---|
     | <div><img src="resources/images/architecture-workflow-1.png" width="500" /></div> | The purpose of this workflow it's to represent an exposed API that will be receiving messages from an external worker service, these messages will be stored in the Azure Service Bus Queue and eventually they will be consumed and processed by a ServiceBusTrigger Function to finally send the results to an storage. |

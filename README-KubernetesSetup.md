@@ -2,10 +2,10 @@
 
 ## Summary
 
-1. CSI Secrets Store Provider and AAD Pod Identity configuration
-2. DAPR configuration
-3. KEDA configuration
-4. Zipkin configuration
+1. [CSI Secrets Store Provider and AAD Pod Identity configuration](#csi-secrets-store-provider-and-aad-pod-identity-configuration)
+2. [DAPR configuration](#dapr-configuration)
+3. [KEDA configuration](#keda-configuration)
+4. [Zipkin configuration](#zipkin-configuration)
 
 ## CSI Secrets Store Provider and AAD Pod Identity configuration
 
@@ -17,19 +17,19 @@ Steps:
 
 1. Using the Azure CLI download the cluster credentials in the local environment or if you prefer use the Azure Shell.
 
-    ```bash
+    ```
     az aks get-credentials -n [Kubernetes Service name] -g [Kubernetes Service resource group]
     ```
 
 2. Using the Azure CLI install the Kubectl command line interface.
 
-    ```bash
+    ```
     az aks install-cli
     ```
 
 3. Install Secrets Store CSI driver and Key Vault Provider.
     
-    ```bash
+    ```
     helm repo add csi-secrets-store-provider-azure https://raw.githubusercontent.com/Azure/secrets-store-csi-driver-provider-azure/master/charts
     kubectl create ns csi-driver
     helm install csi-azure csi-secrets-store-provider-azure/csi-secrets-store-provider-azure --namespace csi-driver
@@ -37,7 +37,7 @@ Steps:
 
 4. Install Aad-Pod-Identity on Kubernetes.
 
-    ```bash
+    ```
     kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/master/deploy/infra/deployment-rbac.yaml
     ```
 
@@ -47,14 +47,14 @@ Steps:
 
     To run the script you need to modified the following values with the right ones before execute the script.
 
-    ```bash
+    ```
     - SubscriptionId="[REPLACE]"
     - KubernetesName="[REPLACE]"
     - KeyVaultName="[REPLACE]"
     - ResourceGroupName="[REPLACE]"
     ```
 
-    ```bash
+    ```
     .\powershell\aad-permissions.ps1
     ```
 
@@ -62,13 +62,13 @@ Steps:
 
     To install the script you need to configure the identity resourceID and clientID before execute the script.
 
-    ```bash
+    ```
     kubectl apply -f kubernetes/aad-pod-identity/kubernetes.azureidentity.yml
     ```
 
 7. Run the script: kubernetes/aad-pod-identity/kubernetes.azureidentitybinding.yml.
 
-    ```bash
+    ```
     kubectl apply -f kubernetes/aad-pod-identity/kubernetes.azureidentitybinding.yml
     ```
 
@@ -78,7 +78,7 @@ Before continue I strongly recommend this lecture about [Dapr environment setup]
 
 Once you have properly installed Dapr in your development environment, deploy Dapr in your cluster.
 
-```bash
+```
 dapr init --kubernetes
 ```
 
@@ -88,7 +88,7 @@ Before continue I strongly recommend this lecture about [KEDA concepts](https://
 
 Deploy KEDA on the cluster.
 
-```bash
+```
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 kubectl create namespace keda
@@ -101,7 +101,7 @@ Before continue I strongly recommend this lecture about [Zipkin concepts](https:
 
 Deploy Zipkin on the cluster.
 
-```bash
+```
 kubectl create ns exporters
 kubectl create deployment zipkin --image openzipkin/zipkin -n exporters
 kubectl expose deployment zipkin --type LoadBalancer --port 9411 -n exporters
