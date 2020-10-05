@@ -34,7 +34,7 @@ Note: At the end of the script execution there is a call to action to save the i
  Service bus connection string: 
  CosmosDB account name: 
  CosmosDB database name: 
- CosmosDB container name:
+ CosmosDB workflow 1 container name:
  CosmosDB primary key: 
  CosmosDB connection string: 
 
