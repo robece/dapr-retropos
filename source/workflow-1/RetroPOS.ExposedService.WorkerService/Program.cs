@@ -5,6 +5,8 @@ using Polly;
 using RetroPOS.ExposedService.WorkerService.Services;
 using RetroPOS.ExposedService.WorkserService.Services;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 
 namespace RetroPOS.ExposedService.WorkserService
@@ -14,16 +16,71 @@ namespace RetroPOS.ExposedService.WorkserService
         public static string ADDRESS = string.Empty;
         public static int MAX_REQUESTS = 0;
 
+        static string IsIPAddress(string address)
+        {
+            string result = string.Empty;
+            IPAddress iPAddress;
+            bool isIP = IPAddress.TryParse(address, out iPAddress);
+
+            if (isIP)
+                result = iPAddress.ToString();
+
+            return result;
+        }
+
         public static void Main(string[] args)
         {
-            Console.WriteLine("Service IP Address:");
-            ADDRESS = Console.ReadLine();
+            List<string> exceptions = new List<string>();
 
-            Console.WriteLine("Max Requests:");
-            MAX_REQUESTS = Convert.ToInt32(Console.ReadLine());
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Service IP Address:");
+                ADDRESS = IsIPAddress(Console.ReadLine());
 
-            Console.WriteLine("Starting");
-            CreateHostBuilder(args).Build().Run();
+                Console.WriteLine("Max Requests:");
+                MAX_REQUESTS = Convert.ToInt32(Console.ReadLine());
+
+                if (ADDRESS.Length == 0)
+                    exceptions.Add("Invalid address");
+
+                if (MAX_REQUESTS == 0)
+                    exceptions.Add("Invalid max requests");
+            } else
+            {
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (args[i] == "--address")
+                    {
+                        if (i < args.Length - 1)
+                            if (!string.IsNullOrEmpty(args[i + 1]))
+                                ADDRESS = IsIPAddress(args[i + 1]);
+                    }
+
+                    if (args[i] == "--max-requests")
+                    {
+                        if (i < args.Length - 1)
+                            if (!string.IsNullOrEmpty(args[i + 1]))
+                                int.TryParse(args[i + 1], out MAX_REQUESTS);
+                    }
+                }
+
+                if (ADDRESS.Length == 0)
+                    exceptions.Add("Invalid address, verify parameter --address");
+
+                if (MAX_REQUESTS == 0)
+                    exceptions.Add("Invalid max requests, verify parameter --max-requests");
+            }
+
+            if (exceptions.Count == 0)
+            {
+                Console.WriteLine($"Starting with ADDRESS: {ADDRESS} and MAX REQUESTS: {MAX_REQUESTS}");
+                CreateHostBuilder(args).Build().Run();
+            } else
+            {
+                Console.WriteLine("Exceptions:");
+                foreach (string s in exceptions)
+                    Console.WriteLine($"- {s}");
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

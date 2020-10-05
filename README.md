@@ -6,7 +6,7 @@ Dapr Retro Point of Sales (Backend Workflows) is an event-driven microservices b
 
 After evaluating a variety of approaches and technologies, the engineering team has decided to use technologies like .NET Core, Containers, Functions, Dapr and KEDA to enable system scalability and functionality such as reliable state, bindings, triggers, distributed tracing, secret management, service to service invocation. 
 
-## Learn on the road
+## Learning along the way
 
 These set of workflows intents to be a part of a production ready architecture, tested under heavy loads and mitigating possible scalability issues by using modern microservices practices, that can be use to learn on the road, we encourage to deploy the solution and learn on the road by exploring each component and configuration. In order to make this project achievable there are some technologies predefined, however, you can add or remove components in your own design to make it more flexible.
 
@@ -27,8 +27,10 @@ These set of workflows intents to be a part of a production ready architecture, 
     - Deploy or remove all resources used by the solution with these scripts.
 2. [Kubernetes Service Setup](README-KubernetesSetup.md)
     - Configure all the Kubernetes Service components used by the solution.
-3. [Workflow 1](README-Workflow-1.md)
-    - The purpose of this workflow it's to represent an exposed API that will be receiving messages from an external worker service, these messages will be stored in the Azure Service Bus Queue and eventually they will be consumed and processed by a ServiceBusTrigger Function to finally send the results to an storage.
+3. [Workflow 1 - API to Queue to Function](README-Workflow-1.md)
+    | diagram  | description |
+    |---|---|
+    | <div><img src="resources/images/architecture-workflow-1.png" width="500" /></div> | The purpose of this workflow it's to represent an exposed API that will be receiving messages from an external worker service, these messages will be stored in the Azure Service Bus Queue and eventually they will be consumed and processed by a ServiceBusTrigger Function to finally send the results to an storage. |
 
 ## Credits
 

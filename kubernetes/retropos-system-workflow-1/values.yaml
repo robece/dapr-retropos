@@ -40,7 +40,7 @@ exposedAPI:
   autoscaling:
     name: exposed-api
     minReplicas: 2
-    maxReplicas: 50
+    maxReplicas: 20
     targetCPUUtilizationPercentage: 40
     targetMemoryUtilizationPercentage: 40
 

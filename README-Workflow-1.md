@@ -1,4 +1,4 @@
-# Workflow 1
+# Workflow 1 - API to Queue to Function
 
 ## Summary
 
@@ -10,6 +10,7 @@
 6. Microservices port configuration for debugging
 7. Applications to Container Registry
 8. Kubernetes resources
+9. ¡Let's apply some stress to this!
 
 ## Description
 
@@ -131,8 +132,8 @@ Note: During the development of the project, I found some early adoption conside
     | secretProviderClass.databasePrimaryKey | cosmosdb primary key secret on key vault |
     | secretProviderClass.storageConnectionString | storage connection string secret on key vault |
     | secretProviderClass.serviceBusConnectionString | service bus connection string secret on key vault |
-    | exposedAPI.deployment.image.repository | repository, image and tag from the exposed service api |
-    | consumerAPI.deployment.image.repository | repository, image and tag from the consumer api |
+    | exposedAPI.deployment.image.repository | exposed service api repository, image and tag |
+    | consumerAPI.deployment.image.repository | consumer api repository, image and tag |
     | consumerAPI.deployment.env.azureWebJobsStorage | storage connection string secret on key vault |
     | consumerAPI.deployment.env.serviceBusConnectionString | service bus connection string secret on key vault |
 
@@ -154,3 +155,7 @@ Note: During the development of the project, I found some early adoption conside
                  --set consumerAPI.deployment.env.azureWebJobsStorage=storage-connectionstring-retroposstg 
                  --set consumerAPI.deployment.env.serviceBusConnectionString=servicebus-connectionstring-retropossbns
     ```
+
+## Load Tests
+
+This is an important consideration in the workflow design to validate the stability, integrity and resilence of each one of the components, because the more components we have the more points of failures we need to validate. You can perform this by using the RetroPOS.ExposedService.WorkerService project, this is console application that can run in the development environment to hit our cluster or we can use a set of virtual machines working together to amplify the volumetry of requests.
