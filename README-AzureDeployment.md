@@ -26,7 +26,7 @@ Note: At the end of the script execution there is a call to action to save the i
  Managed identity name: 
  Managed identity id: 
  Managed identity client id: 
- Container registry: 
+ Container registry name: 
  Key vault name: 
  Storage name: 
  Storage connection string: 
