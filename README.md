@@ -2,7 +2,7 @@
 
 ## Customer Story
 
-Dapr Retro Point of Sales (Backend Workflows) is an event-driven microservices based architecture for Contoso Ltd., which will enable scalability in the next generation of point of sales while mitigating the current technical debt.
+Dapr Retro Point of Sales (Backend Workflows) is an event-driven microservices based architecture for Contoso Ltd., which will enable scalability with a plugable design for the next generation of cloud point of sales.
 
 After evaluating a variety of approaches and technologies, the engineering team has decided to use technologies like .NET Core, Containers, Functions, Dapr and KEDA to enable system scalability and functionality such as reliable state, bindings, triggers, distributed tracing, secret management, service to service invocation. 
 
