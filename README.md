@@ -12,14 +12,19 @@ These set of workflows intents to be a part of a production ready architecture, 
 
 ## Prerequisites
 
-- [Azure Subscription](https://portal.azure.com/)
-- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) - Minimum version: 2.12.1
-- [Visual Studio Community 2019 or Code](https://visualstudio.microsoft.com/es/downloads/)
-- [.NET Core 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1)
-- [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local) - Minimum version: 3.x
-- [Docker Desktop](https://docs.docker.com/engine/install/)
-- [Dapr](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#prerequisites) - Minimum version: 0.10.0
-- [HELM](https://helm.sh/docs/intro/install/) - Minimum version: 3.2.1
+| Attribute | Details |
+|--------|--------|
+| [Dapr runtime version](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#prerequisites) | 0.10.0 |
+| [KEDA](https://keda.sh/) | 1.5.0 |
+| [HELM](https://helm.sh/docs/intro/install/) | 3.2.1 |
+| [.NET Core](https://dotnet.microsoft.com/download/dotnet-core/3.1) | 3.1 |
+| [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local) | 3.x |
+| [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) | 2.12.1 |
+| [Docker Desktop](https://docs.docker.com/engine/install/) | 2.4.0.0 |
+| [Visual Studio Community 2019 or Code](https://visualstudio.microsoft.com/es/downloads/) | Required |
+| [Azure Subscription](https://portal.azure.com/) | Required |
+| [Language](#) | C# |
+| [Environment](#) | Local or Kubernetes |
 
 ## Index
 
