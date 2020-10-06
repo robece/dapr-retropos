@@ -7,44 +7,50 @@
 
 ## Azure resources deployment script
 
-Run the script: powershell/azure-deployment.ps1 to deploy the Azure resources.
+1. Connect to Azure Container Registry via Azure CLI.
 
-```
-.\powershell\azure-deployment.ps1
-```
+    ```
+    az login
+    ```
 
-Note: At the end of the script execution there is a call to action to save the information that will be used in the future, be sure keep safe that information.
+2. Run the script: powershell/azure-deployment.ps1 to deploy the Azure resources.
 
-```
-****************************CALL TO ACTION****************************
+    ```
+    .\powershell\azure-deployment.ps1
+    ```
 
- Deployment alias: 
- Resource group: 
- Location: 
- Cluster name: 
- Kubernetes version: 
- Managed identity name: 
- Managed identity id: 
- Managed identity client id: 
- Container registry name: 
- Key vault name: 
- Storage name: 
- Storage connection string: 
- Service bus namespace name: 
- Service bus connection string: 
- CosmosDB account name: 
- CosmosDB database name: 
- CosmosDB workflow 1 container name:
- CosmosDB primary key: 
- CosmosDB connection string: 
+    Note: At the end of the script execution there is a call to action to save the information that will be used in the future, be sure keep safe that information.
 
-****************************CALL TO ACTION****************************
-```
+    ```
+    ****************************CALL TO ACTION****************************
+
+    Deployment alias: 
+    Resource group: 
+    Location: 
+    Cluster name: 
+    Kubernetes version: 
+    Managed identity name: 
+    Managed identity id: 
+    Managed identity client id: 
+    Container registry name: 
+    Key vault name: 
+    Storage name: 
+    Storage connection string: 
+    Service bus namespace name: 
+    Service bus connection string: 
+    CosmosDB account name: 
+    CosmosDB database name: 
+    CosmosDB workflow 1 container name:
+    CosmosDB primary key: 
+    CosmosDB connection string: 
+
+    ****************************CALL TO ACTION****************************
+    ```
 
 ## Azure resources removal script
 
-Run the script: powershell/azure-removal.ps1 to remove the Azure resources.
+1. Run the script: powershell/azure-removal.ps1 to remove the Azure resources.
     
-```
-.\powershell\azure-removal.ps1
-```
+    ```
+    .\powershell\azure-removal.ps1
+    ```
