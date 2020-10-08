@@ -27,7 +27,7 @@ Note: During the development of the project, I found some early adoption conside
 
 - source/workflow-1/RetroPOS.ExposedService.Api
 - source/workflow-1/RetroPOS.ExposedService.WorkerService
-- source/workflow-1/RetroPOS.Consumer.Api
+- source/workflow-1/RetroPOS.Consumer.Function
 
 ## Components required
 
@@ -50,12 +50,12 @@ Note: During the development of the project, I found some early adoption conside
 - [How to setup state stores](https://github.com/dapr/docs/tree/master/howto/setup-state-store)
 - [Diagnose with tracing](https://github.com/dapr/docs/tree/master/howto/diagnose-with-tracing)
 
-## Microservices port configuration for debugging
+## Microservices port configuration for local development environment 
 
-| services  | http | http-dapr | grpc-dapr | metrics-dapr | daprd command |
+| services  | http | http-dapr | grpc-dapr | dapr command |
 |---|---|---|---|---|---|
-| RetroPOS.ExposedService.Api | 5000 | 5100 | 5200 | 5300 | daprd -app-id exposed-api -components-path source\workflow-1\RetroPOS.Dapr.Components -app-port 5000 -dapr-http-port 5100 -dapr-grpc-port 5200 -metrics-port 5300 -log-level debug -config source\workflow-1\RetroPOS.Dapr.Components\dapr.tracing.yml |
-| RetroPOS.Consumer.Api | 6000 | 6100 | 6200 | 6300 | daprd -app-id consumer-api -components-path source\workflow-1\RetroPOS.Dapr.Components -app-port 6000 -dapr-http-port 6100 -dapr-grpc-port 6200 -metrics-port 6300 -log-level debug -config source\workflow-1\RetroPOS.Dapr.Components\dapr.tracing.yml |
+| RetroPOS.ExposedService.Api | 5000 | 5100 | 5200 | dapr run --app-id exposed-api --components-path source\workflow-1\RetroPOS.Dapr.Components --app-port 5000 --dapr-http-port 5100 --dapr-grpc-port 5200 --config source\workflow-1\RetroPOS.Dapr.Components\dapr.tracing.yml |
+| RetroPOS.Consumer.Function | 6000 | 6100 | 6200 | dapr run --app-id consumer-function --components-path source\workflow-1\RetroPOS.Dapr.Components --app-port 6000 --dapr-http-port 6100 --dapr-grpc-port 6200 --config source\workflow-1\RetroPOS.Dapr.Components\dapr.tracing.yml |
 
 ## Applications to Container Registry
 
@@ -73,10 +73,10 @@ Note: During the development of the project, I found some early adoption conside
     az acr build -f source/workflow-1/RetroPOS.ExposedService.Api/Dockerfile -t [name of registry].[registry host]/exposed-api:1.0.0 -r [name of registry] source/workflow-1/RetroPOS.ExposedService.Api/
     ```
 
-    Consumer API:
+    Consumer Function:
 
     ```
-    az acr build -f source/workflow-1/RetroPOS.Consumer.Api/Dockerfile -t [name of registry].[registry host]/consumer-api:1.0.0 -r [name of registry] source/workflow-1/RetroPOS.Consumer.Api/
+    az acr build -f source/workflow-1/RetroPOS.Consumer.Function/Dockerfile -t [name of registry].[registry host]/consumer-function:1.0.0 -r [name of registry] source/workflow-1/RetroPOS.Consumer.Function/
     ```
 
 ## Kubernetes resources
@@ -135,13 +135,13 @@ Note: During the development of the project, I found some early adoption conside
     | exposedAPI.deployment.image.repository | exposed service api repository, image and tag |
     | exposedAPI.autoscaling.minReplicas | exposed service api autoscaler pod min replicas |
     | exposedAPI.autoscaling.maxReplicas | exposed service api autoscaler pod max replicas |
-    | consumerAPI.deployment.replicas | consumer service api pod replicas |
-    | consumerAPI.deployment.image.repository | consumer api repository, image and tag |
-    | consumerAPI.deployment.env.azureWebJobsStorage | storage connection string secret on key vault |
-    | consumerAPI.deployment.env.serviceBusConnectionString | service bus connection string secret on key vault |
-    | consumerAPI.keda.scaledObject.minReplicaCount | consumer service api keda min pod replicas |
-    | consumerAPI.keda.scaledObject.maxReplicaCount | consumer service api keda max pod replicas |
-    | consumerAPI.keda.scaledObject.triggers.messageCount | consumer service api keda message count |
+    | consumerFunction.deployment.replicas | consumer function pod replicas |
+    | consumerFunction.deployment.image.repository | consumer function repository, image and tag |
+    | consumerFunction.deployment.env.azureWebJobsStorage | consumer function storage connection string secret on key vault |
+    | consumerFunction.deployment.env.serviceBusConnectionString | consumer function service bus connection string secret on key vault |
+    | consumerFunction.keda.scaledObject.minReplicaCount | consumer function keda min pod replicas |
+    | consumerFunction.keda.scaledObject.maxReplicaCount | consumer function keda max pod replicas |
+    | consumerFunction.keda.scaledObject.triggers.messageCount | consumer function keda message count |
 
     <b>Example of helm chart installation:</b>
 
@@ -160,13 +160,13 @@ Note: During the development of the project, I found some early adoption conside
                  --set exposedAPI.deployment.image.repository=retroposcr.azurecr.io/exposed-api:1.0.0 
                  --set exposedAPI.autoscaling.minReplicas=2 
                  --set exposedAPI.autoscaling.maxReplicas=20 
-                 --set consumerAPI.deployment.replicas=5 
-                 --set consumerAPI.deployment.image.repository=retroposcr.azurecr.io/consumer-api:1.0.0 
-                 --set consumerAPI.deployment.env.azureWebJobsStorage=storage-connectionstring-retroposstg 
-                 --set consumerAPI.deployment.env.serviceBusConnectionString=servicebus-connectionstring-retropossbns 
-                 --set consumerAPI.keda.scaledObject.minReplicaCount=5 
-                 --set consumerAPI.keda.scaledObject.maxReplicaCount=20 
-                 --set consumerAPI.keda.scaledObject.triggers.messageCount=2
+                 --set consumerFunction.deployment.replicas=5 
+                 --set consumerFunction.deployment.image.repository=retroposcr.azurecr.io/consumer-function:1.0.0 
+                 --set consumerFunction.deployment.env.azureWebJobsStorage=storage-connectionstring-retroposstg 
+                 --set consumerFunction.deployment.env.serviceBusConnectionString=servicebus-connectionstring-retropossbns 
+                 --set consumerFunction.keda.scaledObject.minReplicaCount=5 
+                 --set consumerFunction.keda.scaledObject.maxReplicaCount=20 
+                 --set consumerFunction.keda.scaledObject.triggers.messageCount=2
     ```
 
 ## Load test

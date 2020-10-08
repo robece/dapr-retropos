@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.consumerFunction.deployment.name }}
+  labels:
+    app: {{ .Values.consumerFunction.deployment.name }}
+    aadpodidbinding: {{ .Values.consumerFunction.deployment.aadpodidbinding }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.consumerFunction.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.consumerFunction.deployment.name }}
+        aadpodidbinding: {{ .Values.consumerFunction.deployment.aadpodidbinding }}
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "{{ .Values.consumerFunction.deployment.dapr.name }}"
+        dapr.io/app-port: "80"
+        dapr.io/config: "{{ .Values.consumerFunction.deployment.dapr.config }}"
+    spec:
+      containers:
+      - name: {{ .Values.consumerFunction.deployment.containerName }}
+        image: {{ .Values.consumerFunction.deployment.image.repository }}
+        ports:
+        - containerPort: 80
+        imagePullPolicy: {{ .Values.consumerFunction.deployment.image.pullPolicy }}
+        env:
+          - name: WEBSITE_HOSTNAME
+            value: "localhost:80"
+          - name: AzureWebJobsStorage
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.consumerFunction.deployment.env.azureWebJobsStorage }}"
+                key: "{{ .Values.consumerFunction.deployment.env.azureWebJobsStorage }}"
+          - name: ServiceBusConnectionString
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.consumerFunction.deployment.env.serviceBusConnectionString }}"
+                key: "{{ .Values.consumerFunction.deployment.env.serviceBusConnectionString }}"
+          - name: ConsumerStateComponentName
+            value: "{{ .Values.consumerFunction.deployment.env.consumerStateComponentName }}"
+        resources:
+          {{- toYaml .Values.consumerFunction.resources | nindent 12 }}
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ .Values.secretProviderClass.name }}

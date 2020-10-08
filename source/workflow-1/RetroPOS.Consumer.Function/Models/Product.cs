@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace RetroPOS.Consumer.Api.Models
+namespace RetroPOS.Consumer.Function.Models
 {
     public class Product
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace RetroPOS.Consumer.Api.Services
+namespace RetroPOS.Consumer.Function.Services
 {
     public interface IConsumerService
     {

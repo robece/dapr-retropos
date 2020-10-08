@@ -1,7 +1,7 @@
 apiVersion: keda.k8s.io/v1alpha1
 kind: TriggerAuthentication
 metadata:
-  name: {{ .Values.consumerAPI.keda.triggerAuthentication.name }}
+  name: {{ .Values.consumerFunction.keda.triggerAuthentication.name }}
 spec:
   env: # Optional.
     - parameter: connection # Required.

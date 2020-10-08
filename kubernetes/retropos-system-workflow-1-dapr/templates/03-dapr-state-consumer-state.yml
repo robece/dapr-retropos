@@ -16,6 +16,6 @@ spec:
   - name: collection
     value: "workflow1-consumer"
 scopes:
-  - consumer-api
+  - consumer-function
 auth:
   secretStore: {{ .Values.dapr.secretStore.name }}

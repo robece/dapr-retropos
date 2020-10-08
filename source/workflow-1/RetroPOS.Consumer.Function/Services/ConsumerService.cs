@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RetroPOS.Consumer.Api.Services
+namespace RetroPOS.Consumer.Function.Services
 {
     public class ConsumerService : IConsumerService
     {

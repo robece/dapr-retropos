@@ -1,13 +1,13 @@
 ﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
-using RetroPOS.Consumer.Api;
-using RetroPOS.Consumer.Api.Services;
+using RetroPOS.Consumer.Function;
+using RetroPOS.Consumer.Function.Services;
 using System;
 using System.Net.Http;
 
 [assembly: FunctionsStartup(typeof(Startup))]
-namespace RetroPOS.Consumer.Api
+namespace RetroPOS.Consumer.Function
 {
     public class Startup : FunctionsStartup
     {

@@ -44,15 +44,15 @@ exposedAPI:
     targetCPUUtilizationPercentage: 40
     targetMemoryUtilizationPercentage: 40
 
-consumerAPI:
+consumerFunction:
   deployment:
     replicas: 5
     aadpodidbinding: kubernetes.azureidentity
-    name: consumer-api
+    name: consumer-function
     dapr:
-      name: consumer-api
+      name: consumer-function
       config: dapr.tracing
-    containerName: consumer-api
+    containerName: consumer-function
     image:
       repository:
       pullPolicy: Always
@@ -69,10 +69,10 @@ consumerAPI:
         cpu: "200m"
   keda:
     triggerAuthentication:
-      name: keda.triggerauthentication.consumer-api
+      name: keda.triggerauthentication.consumer-function
     scaledObject:
-      name: keda.scaledobject.consumer-api
-      deploymentName: consumer-api
+      name: keda.scaledobject.consumer-function
+      deploymentName: consumer-function
       pollingInterval: 5
       coolDownPeriod: 0
       minReplicaCount: 5
@@ -81,4 +81,4 @@ consumerAPI:
         type: azure-servicebus
         queueName: internal-queue
         messageCount: 2
-        authenticationRef: keda.triggerauthentication.consumer-api
+        authenticationRef: keda.triggerauthentication.consumer-function

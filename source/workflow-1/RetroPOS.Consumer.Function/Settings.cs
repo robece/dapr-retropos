@@ -1,4 +1,4 @@
-﻿namespace RetroPOS.Consumer.Api
+﻿namespace RetroPOS.Consumer.Function
 {
     public interface Settings
     {

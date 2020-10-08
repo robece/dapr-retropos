@@ -3,12 +3,12 @@ using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using RetroPOS.Consumer.Api.Models;
-using RetroPOS.Consumer.Api.Services;
+using RetroPOS.Consumer.Function.Models;
+using RetroPOS.Consumer.Function.Services;
 using System;
 using System.Threading.Tasks;
 
-namespace RetroPOS.Consumer.Api.Functions
+namespace RetroPOS.Consumer.Function.Activities
 {
     public class Consumer
     {
