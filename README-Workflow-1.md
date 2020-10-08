@@ -53,7 +53,7 @@ Note: During the development of the project, I found some early adoption conside
 ## Microservices port configuration for local development environment 
 
 | services  | http | http-dapr | grpc-dapr | dapr command |
-|---|---|---|---|---|---|
+|---|---|---|---|---|
 | RetroPOS.ExposedService.Api | 5000 | 5100 | 5200 | dapr run --app-id exposed-api --components-path source\workflow-1\RetroPOS.Dapr.Components --app-port 5000 --dapr-http-port 5100 --dapr-grpc-port 5200 --config source\workflow-1\RetroPOS.Dapr.Components\dapr.tracing.yml |
 | RetroPOS.Consumer.Function | 6000 | 6100 | 6200 | dapr run --app-id consumer-function --components-path source\workflow-1\RetroPOS.Dapr.Components --app-port 6000 --dapr-http-port 6100 --dapr-grpc-port 6200 --config source\workflow-1\RetroPOS.Dapr.Components\dapr.tracing.yml |
 
