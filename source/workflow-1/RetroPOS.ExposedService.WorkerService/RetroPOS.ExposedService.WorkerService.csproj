@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>dotnet-RetroPOS.ExposedService.WorkerService-996A8462-7A3E-4F9B-9BC3-8D593CA6056B</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
