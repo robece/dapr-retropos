@@ -19,6 +19,7 @@ namespace RetroPOS.ExposedService.Api.Controllers
         public async Task<IActionResult> QueueMessage()
         {
             var result = await exposedSvc.QueueMessageAsync();
+
             ActionResult actionResult = (result) ? StatusCode(200) : StatusCode(500);
             return actionResult;
         }

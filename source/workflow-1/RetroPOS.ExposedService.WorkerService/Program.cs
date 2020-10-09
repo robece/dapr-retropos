@@ -3,7 +3,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Polly;
 using RetroPOS.ExposedService.WorkerService.Services;
-using RetroPOS.ExposedService.WorkserService.Services;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -45,7 +44,8 @@ namespace RetroPOS.ExposedService.WorkserService
 
                 if (MAX_REQUESTS == 0)
                     exceptions.Add("Invalid max requests");
-            } else
+            }
+            else
             {
                 for (int i = 0; i < args.Length; i++)
                 {
@@ -75,7 +75,8 @@ namespace RetroPOS.ExposedService.WorkserService
             {
                 Console.WriteLine($"Starting with ADDRESS: {ADDRESS} and MAX REQUESTS: {MAX_REQUESTS}");
                 CreateHostBuilder(args).Build().Run();
-            } else
+            }
+            else
             {
                 Console.WriteLine("Exceptions:");
                 foreach (string s in exceptions)

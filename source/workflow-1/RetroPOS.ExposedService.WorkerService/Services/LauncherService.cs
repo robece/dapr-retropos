@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using RetroPOS.ExposedService.WorkserService.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;

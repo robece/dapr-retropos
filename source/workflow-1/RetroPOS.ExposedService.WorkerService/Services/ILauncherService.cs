@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace RetroPOS.ExposedService.WorkserService.Services
+namespace RetroPOS.ExposedService.WorkerService.Services
 {
     public interface ILauncherService
     {

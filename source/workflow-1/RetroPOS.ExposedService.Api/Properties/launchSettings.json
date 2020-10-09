@@ -12,7 +12,7 @@
     "RetroPOS.ExposedService.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "queue",
+      "launchUrl": "api/queue",
       "environmentVariables": {
         "OutputBindingComponentName": "",
         "ASPNETCORE_ENVIRONMENT": "Development"

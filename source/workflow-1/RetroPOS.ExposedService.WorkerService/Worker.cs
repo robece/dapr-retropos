@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using RetroPOS.ExposedService.WorkserService.Services;
+using RetroPOS.ExposedService.WorkerService.Services;
 using System.Threading;
 using System.Threading.Tasks;
 
