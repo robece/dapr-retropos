@@ -58,18 +58,24 @@ Steps:
     .\powershell\aad-permissions.ps1
     ```
 
-6. Run the script: kubernetes/aad-pod-identity/kubernetes.azureidentity.yml.
+6. Install Azure Active Directory Pod Identity chart.
 
-    To install the script you need to configure the identity resourceID and clientID before execute the script.
+    <b>Chart:</b> aad-pod-identity
+    
+    <b>Description:</b> Package to deploy aad-pod-identity components for all workflows
+
+    | Required Parameters | Description |
+    |-|-|
+    | azureIdentity.spec.resourceID | managed identity id |
+    | azureIdentity.spec.clientID | managed identity client id |
+
+     <b>Example of helm chart installation:</b>
 
     ```
-    kubectl apply -f kubernetes/aad-pod-identity/kubernetes.azureidentity.yml
-    ```
-
-7. Run the script: kubernetes/aad-pod-identity/kubernetes.azureidentitybinding.yml.
-
-    ```
-    kubectl apply -f kubernetes/aad-pod-identity/kubernetes.azureidentitybinding.yml
+    helm upgrade --install aad-pod-identity kubernetes\helm\aad-pod-identity 
+                 --namespace default 
+                 --set azureIdentity.spec.resourceID=/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/MC_retropos-group_retroposks_westus2/providers/Microsoft.ManagedIdentity/userAssignedIdentities/retroposks-agentpool 
+                 --set azureIdentity.spec.clientID=00000000-0000-0000-0000-000000000000
     ```
 
 ## DAPR configuration

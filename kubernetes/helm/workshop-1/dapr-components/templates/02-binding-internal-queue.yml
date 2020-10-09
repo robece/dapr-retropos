@@ -1,0 +1,19 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{ .Values.bindingInternalQueue.name }}
+spec:
+  type: bindings.azure.servicebusqueues
+  metadata:
+  - name: connectionString
+    secretKeyRef:
+      name: {{ .Values.bindingInternalQueue.connectionString }}
+      key: {{ .Values.bindingInternalQueue.connectionString }}
+  - name: queueName
+    value: "{{ .Values.bindingInternalQueue.queueName }}"
+scopes:
+  {{- range $scope := .Values.bindingInternalQueue.scopes }}
+  - {{ $scope }}
+  {{- end }}  
+auth:
+  secretStore: {{ .Values.secretStore.name }}

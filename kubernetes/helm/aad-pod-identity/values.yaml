@@ -1,0 +1,14 @@
+# Default values for retropos-system.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+azureIdentity:
+  name: kubernetes.azureidentity
+  spec:
+    resourceID: 
+    clientID: 
+azureIdentityBinding:
+  name: kubernetes.azureidentitybinding
+  spec:
+    azureIdentity: kubernetes.azureidentity
+    selector: kubernetes.azureidentity

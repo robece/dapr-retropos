@@ -1,0 +1,26 @@
+# Default values for retropos-system-dapr.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+secretStore:
+  name: dapr.secretstore
+  vaultName: 
+  clientId: 
+bindingInternalQueue:
+  name: dapr.binding.internal-queue
+  connectionString: 
+  queueName: internal-queue
+  scopes:
+    - exposed-api
+stateConsumerState:
+  name: dapr.state.consumer-state
+  url: 
+  masterKey: 
+  database: 
+  collection: workflow1-consumer
+  scopes:
+    - consumer-function
+tracing:
+  name: dapr.tracing
+exporter:
+  name: dapr.exporter

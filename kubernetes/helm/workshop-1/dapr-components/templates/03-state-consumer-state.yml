@@ -1,0 +1,23 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{ .Values.stateConsumerState.name }}
+spec:
+  type: state.azure.cosmosdb
+  metadata:
+  - name: url
+    value: "{{ .Values.stateConsumerState.url }}"
+  - name: masterKey
+    secretKeyRef:
+      name: {{ .Values.stateConsumerState.masterKey }}
+      key: {{ .Values.stateConsumerState.masterKey }}
+  - name: database
+    value: "{{ .Values.stateConsumerState.database }}"
+  - name: collection
+    value: "{{ .Values.stateConsumerState.collection }}"
+scopes:
+  {{- range $scope := .Values.stateConsumerState.scopes }}
+  - {{ $scope }}
+  {{- end }}  
+auth:
+  secretStore: {{ .Values.secretStore.name }}

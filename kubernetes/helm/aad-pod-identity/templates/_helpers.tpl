@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "retropos-system-workflow1.name" -}}
+{{- define "aad-pod-identity.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "retropos-system-workflow1.fullname" -}}
+{{- define "aad-pod-identity.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "retropos-system-workflow1.chart" -}}
+{{- define "aad-pod-identity.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "retropos-system-workflow1.labels" -}}
-helm.sh/chart: {{ include "retropos-system-workflow1.chart" . }}
-{{ include "retropos-system-workflow1.selectorLabels" . }}
+{{- define "aad-pod-identity.labels" -}}
+helm.sh/chart: {{ include "aad-pod-identity.chart" . }}
+{{ include "aad-pod-identity.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "retropos-system-workflow1.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "retropos-system-workflow1.name" . }}
+{{- define "aad-pod-identity.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "aad-pod-identity.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "retropos-system-workflow1.serviceAccountName" -}}
+{{- define "aad-pod-identity.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "retropos-system-workflow1.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "aad-pod-identity.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

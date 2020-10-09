@@ -1,0 +1,29 @@
+apiVersion: keda.k8s.io/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ .Values.keda.scaledObject.name }}
+  labels:
+    deploymentName: {{ .Values.keda.scaledObject.deploymentName }}
+spec:
+  scaleTargetRef:
+    deploymentName: {{ .Values.keda.scaledObject.deploymentName }}
+  pollingInterval: {{ .Values.keda.scaledObject.pollingInterval }}
+  coolDownPeriod: {{ .Values.keda.scaledObject.coolDownPeriod }}
+  minReplicaCount: {{ .Values.keda.scaledObject.minReplicaCount }}
+  maxReplicaCount: {{ .Values.keda.scaledObject.maxReplicaCount }}
+  triggers:
+  - type: {{ .Values.keda.scaledObject.triggers.type }}
+    metadata:
+      # Required: queueName OR topicName and subscriptionName
+      queueName: {{ .Values.keda.scaledObject.triggers.queueName }}
+      # or
+      #topicName: functions-sbtopic
+      #subscriptionName: sbtopic-sub1
+      # Required: connection OR authenticationRef that defines connection
+      #connectionFromEnv: SERVICEBUS_CONNECTIONSTRING_ENV_NAME # reference to a connection string in deployment
+      # or authenticationRef as defined below
+      #
+      # Optional
+      messageCount: "{{ .Values.keda.scaledObject.triggers.messageCount }}" # default 5
+    authenticationRef:
+        name: {{ .Values.keda.scaledObject.triggers.authenticationRef }} # authenticationRef would need either podIdentity or define a connection parameter

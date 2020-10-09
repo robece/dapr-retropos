@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  labels:
+    app: {{ .Values.deployment.name }}
+    aadpodidbinding: {{ .Values.deployment.aadpodidbinding }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.name }}
+        aadpodidbinding: {{ .Values.deployment.aadpodidbinding }}
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "{{ .Values.deployment.dapr.name }}"
+        dapr.io/app-port: "80"
+        dapr.io/config: "{{ .Values.deployment.dapr.config }}"
+    spec:
+      containers:
+      - name: {{ .Values.deployment.containerName }}
+        image: {{ .Values.deployment.image.repository }}
+        ports:
+        - containerPort: 80
+        imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+        env:
+          - name: WEBSITE_HOSTNAME
+            value: "localhost:80"
+          - name: AzureWebJobsStorage
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.deployment.env.azureWebJobsStorage }}"
+                key: "{{ .Values.deployment.env.azureWebJobsStorage }}"
+          - name: ServiceBusConnectionString
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.deployment.env.serviceBusConnectionString }}"
+                key: "{{ .Values.deployment.env.serviceBusConnectionString }}"
+          - name: ConsumerStateComponentName
+            value: "{{ .Values.deployment.env.consumerStateComponentName }}"
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ .Values.secretProviderClass.name }}

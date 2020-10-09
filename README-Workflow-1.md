@@ -89,37 +89,18 @@ Note: During the development of the project, I found some early adoption conside
 
 2. HELM Charts.
 
-    <b>Important:</b> <u>The HELM chart deployment is ready to work with the resources deployed by using the Azure powershell script, in case you want to use other Azure resource or Dapr component you will need to modify the HELM chart.</u>
+    >  ### Installation order:
+    > 1. security-components
+    > 2. dapr-components
+    > 3. exposed-api
+    > 4. consumer-function
+    >
+    > ### Important: 
+    > Packages has been prepared to work with the resources deployed with the Azure powershell script, in case you want to use another component you will need to modify the target chart.
 
-    <b>Chart:</b> retropos-system-workflow-1-dapr
+    <b>Chart:</b> security-components
     
-    <b>Description:</b> HELM chart to deploy all the Dapr components used for Workflow 1
-
-    | Required Parameters | Description |
-    |-|-|
-    | dapr.secretStore.vaultName | name of the key vault resource |
-    | dapr.secretStore.clientId | managed identity client id |
-    | dapr.bindingInternalQueue.connectionString | service bus connection string secret on key vault |
-    | dapr.stateConsumerState.url | cosmosdb url |
-    | dapr.stateConsumerState.masterKey | cosmosdb primary key secret on key vault |
-    | dapr.stateConsumerState.database | cosmosdb database name |
-
-    <b>Example of helm chart installation:</b>
-
-    ```
-    helm upgrade --install retropos-system-workflow-1-dapr kubernetes\retropos-system-workflow-1-dapr 
-                 --namespace retropos-workflow-1 
-                 --set dapr.secretStore.vaultName=retroposkv 
-                 --set dapr.secretStore.clientId=00000000-0000-0000-0000-000000000000 
-                 --set dapr.bindingInternalQueue.connectionString=servicebus-connectionstring-retropossbns 
-                 --set dapr.stateConsumerState.url=https://retroposcos.documents.azure.com:443/ 
-                 --set dapr.stateConsumerState.masterKey=cosmosdb-primarykey-retroposcos 
-                 --set dapr.stateConsumerState.database=retroposdb
-    ```
-
-    <b>Chart:</b> retropos-system-workflow-1
-    
-    <b>Description:</b> HELM chart to deploy all the solution components used for Workflow 1
+    <b>Description:</b> Package to deploy security components for Workflow 1
 
     | Required Parameters | Description |
     |-|-|
@@ -129,24 +110,13 @@ Note: During the development of the project, I found some early adoption conside
     | secretProviderClass.tenantId | tenant identifier |
     | secretProviderClass.databaseConnectionString | cosmosdb connection string secret on key vault |
     | secretProviderClass.databasePrimaryKey | cosmosdb primary key secret on key vault |
-    | secretProviderClass.storageConnectionString | storage connection string secret on key vault |
     | secretProviderClass.serviceBusConnectionString | service bus connection string secret on key vault |
-    | exposedAPI.deployment.replicas | exposed service api pod replicas |
-    | exposedAPI.deployment.image.repository | exposed service api repository, image and tag |
-    | exposedAPI.autoscaling.minReplicas | exposed service api autoscaler pod min replicas |
-    | exposedAPI.autoscaling.maxReplicas | exposed service api autoscaler pod max replicas |
-    | consumerFunction.deployment.replicas | consumer function pod replicas |
-    | consumerFunction.deployment.image.repository | consumer function repository, image and tag |
-    | consumerFunction.deployment.env.azureWebJobsStorage | consumer function storage connection string secret on key vault |
-    | consumerFunction.deployment.env.serviceBusConnectionString | consumer function service bus connection string secret on key vault |
-    | consumerFunction.keda.scaledObject.minReplicaCount | consumer function keda min pod replicas |
-    | consumerFunction.keda.scaledObject.maxReplicaCount | consumer function keda max pod replicas |
-    | consumerFunction.keda.scaledObject.triggers.messageCount | consumer function keda message count |
+    | secretProviderClass.storageConnectionString | storage connection string secret on key vault |
 
     <b>Example of helm chart installation:</b>
 
     ```
-    helm upgrade --install retropos-system-workflow-1 kubernetes\retropos-system-workflow-1 
+    helm upgrade --install security-components kubernetes\helm\workshop-1\security-components 
                  --namespace retropos-workflow-1 
                  --set secretProviderClass.keyVaultName=retroposkv 
                  --set secretProviderClass.resourceGroup=retropos-group 
@@ -155,18 +125,83 @@ Note: During the development of the project, I found some early adoption conside
                  --set secretProviderClass.databaseConnectionString=cosmosdb-connectionstring-retroposcos 
                  --set secretProviderClass.databasePrimaryKey=cosmosdb-primarykey-retroposcos 
                  --set secretProviderClass.serviceBusConnectionString=servicebus-connectionstring-retropossbns 
-                 --set secretProviderClass.storageConnectionString=storage-connectionstring-retroposstg 
-                 --set exposedAPI.deployment.replicas=2 
-                 --set exposedAPI.deployment.image.repository=retroposcr.azurecr.io/exposed-api:1.0.0 
-                 --set exposedAPI.autoscaling.minReplicas=2 
-                 --set exposedAPI.autoscaling.maxReplicas=20 
-                 --set consumerFunction.deployment.replicas=5 
-                 --set consumerFunction.deployment.image.repository=retroposcr.azurecr.io/consumer-function:1.0.0 
-                 --set consumerFunction.deployment.env.azureWebJobsStorage=storage-connectionstring-retroposstg 
-                 --set consumerFunction.deployment.env.serviceBusConnectionString=servicebus-connectionstring-retropossbns 
-                 --set consumerFunction.keda.scaledObject.minReplicaCount=5 
-                 --set consumerFunction.keda.scaledObject.maxReplicaCount=20 
-                 --set consumerFunction.keda.scaledObject.triggers.messageCount=2
+                 --set secretProviderClass.storageConnectionString=storage-connectionstring-retroposstg
+    ```
+
+    <b>Chart:</b> dapr-components
+    
+    <b>Description:</b> Package to deploy dapr components for Workflow 1
+
+    | Required Parameters | Description |
+    |-|-|
+    | secretStore.vaultName | name of the key vault resource |
+    | secretStore.clientId | managed identity client id |
+    | bindingInternalQueue.connectionString | service bus connection string secret on key vault |
+    | stateConsumerState.url | cosmosdb url |
+    | stateConsumerState.masterKey | cosmosdb primary key secret on key vault |
+    | stateConsumerState.database | cosmosdb database name |
+
+    <b>Example of helm chart installation:</b>
+
+    ```
+    helm upgrade --install dapr-components kubernetes\helm\workshop-1\dapr-components 
+                 --namespace retropos-workflow-1 
+                 --set secretStore.vaultName=retroposkv 
+                 --set secretStore.clientId=00000000-0000-0000-0000-000000000000 
+                 --set bindingInternalQueue.connectionString=servicebus-connectionstring-retropossbns 
+                 --set stateConsumerState.url=https://retroposcos.documents.azure.com:443/ 
+                 --set stateConsumerState.masterKey=cosmosdb-primarykey-retroposcos 
+                 --set stateConsumerState.database=retroposdb
+    ```
+
+    <b>Chart:</b> exposed-api
+    
+    <b>Description:</b> Package to deploy exposed api components for Workflow 1
+
+    | Required Parameters | Description |
+    |-|-|
+    | deployment.replicas | exposed service api pod replicas |
+    | deployment.image.repository | exposed service api repository, image and tag |
+    | autoscaling.minReplicas | exposed service api autoscaler pod min replicas |
+    | autoscaling.maxReplicas | exposed service api autoscaler pod max replicas |
+
+    <b>Example of helm chart installation:</b>
+
+    ```
+    helm upgrade --install exposed-api kubernetes\helm\workshop-1\exposed-api 
+                 --namespace retropos-workflow-1 
+                 --set deployment.replicas=2 
+                 --set deployment.image.repository=retroposcr.azurecr.io/exposed-api:1.0.0 
+                 --set autoscaling.minReplicas=2 
+                 --set autoscaling.maxReplicas=20
+    ```
+
+    <b>Chart:</b> consumer-function
+    
+    <b>Description:</b> Package to deploy consumer-function components for Workflow 1
+
+    | Required Parameters | Description |
+    |-|-|
+    | deployment.replicas | consumer function pod replicas |
+    | deployment.image.repository | consumer function repository, image and tag |
+    | deployment.env.azureWebJobsStorage | consumer function storage connection string secret on key vault |
+    | deployment.env.serviceBusConnectionString | consumer function service bus connection string secret on key vault |
+    | keda.scaledObject.minReplicaCount | consumer function keda min pod replicas |
+    | keda.scaledObject.maxReplicaCount | consumer function keda max pod replicas |
+    | keda.scaledObject.triggers.messageCount | consumer function keda message count |
+
+    <b>Example of helm chart installation:</b>
+
+    ```
+    helm upgrade --install consumer-function kubernetes\helm\workshop-1\consumer-function 
+                 --namespace retropos-workflow-1 
+                 --set deployment.replicas=5 
+                 --set deployment.image.repository=retroposcr.azurecr.io/consumer-function:1.0.0 
+                 --set deployment.env.azureWebJobsStorage=storage-connectionstring-retroposstg 
+                 --set deployment.env.serviceBusConnectionString=servicebus-connectionstring-retropossbns 
+                 --set keda.scaledObject.minReplicaCount=5 
+                 --set keda.scaledObject.maxReplicaCount=20 
+                 --set keda.scaledObject.triggers.messageCount=2
     ```
 
 ## Load test

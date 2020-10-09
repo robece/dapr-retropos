@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: {{ .Values.dapr.exporter.name }}
+  name: {{ .Values.exporter.name }}
 spec:
   type: exporters.zipkin
   metadata:
