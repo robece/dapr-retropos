@@ -1,0 +1,15 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: dapr.binding.subscriber
+spec:
+  type: bindings.azure.blobstorage
+  metadata:
+  - name: storageAccount
+    value: "REPLACE"
+  - name: storageAccessKey
+    value: "REPLACE"
+  - name: container
+    value: "REPLACE"
+scopes:
+  - subscriber-api

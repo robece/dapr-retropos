@@ -1,0 +1,12 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: dapr.pubsub
+spec:
+  type: pubsub.azure.servicebus
+  metadata:
+  - name: connectionString
+    value: "REPLACE"
+scopes:
+  - publisher-api
+  - subscriber-api
