@@ -48,10 +48,10 @@ Steps:
     To run the script you need to modified the following values with the right ones before execute the script.
 
     ```
-    - SubscriptionId="[REPLACE]"
-    - KubernetesName="[REPLACE]"
-    - KeyVaultName="[REPLACE]"
-    - ResourceGroupName="[REPLACE]"
+    - SubscriptionId="REPLACE"
+    - KubernetesName="REPLACE"
+    - KeyVaultName="REPLACE"
+    - ResourceGroupName="REPLACE"
     ```
 
     ```
@@ -62,7 +62,7 @@ Steps:
 
     <b>Chart:</b> aad-pod-identity
     
-    <b>Description:</b> Package to deploy aad-pod-identity components for all workflows
+    <b>Description:</b> Package to deploy Azure Active Directory Pod Identity components for all workflows
 
     | Required Parameters | Description |
     |-|-|

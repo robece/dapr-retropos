@@ -1,7 +1,7 @@
-$SubscriptionId="[REPLACE]"
-$KubernetesName="[REPLACE]"
-$KeyVaultName="[REPLACE]"
-$ResourceGroupName="[REPLACE]"
+$SubscriptionId="REPLACE"
+$KubernetesName="REPLACE"
+$KeyVaultName="REPLACE"
+$ResourceGroupName="REPLACE"
 
 $aks=$(az aks show -n $KubernetesName -g $ResourceGroupName | ConvertFrom-Json)
 
