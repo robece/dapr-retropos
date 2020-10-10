@@ -1,6 +1,6 @@
 apiVersion: v2
-name: retropos-system-workflow1-dapr
-description: RetroPOS System Workflow 1 Dapr Components - Helm chart for Kubernetes
+name: dapr-components
+description: Dapr-RetroPOS Dapr Components for Workflow 1 - Helm chart for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
