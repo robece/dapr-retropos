@@ -18,6 +18,6 @@ spec:
 scopes:
   {{- range $scope := .Values.stateConsumerState.scopes }}
   - {{ $scope }}
-  {{- end }}  
+  {{- end }}
 auth:
   secretStore: {{ .Values.secretStore.name }}

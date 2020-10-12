@@ -14,6 +14,9 @@ $CosmosDBAccountName = "$($DeploymentAlias)cos"
 $CosmosDBDatabaseName = "$($DeploymentAlias)db"
 $CosmosDBContainerWorkflow1Name = "workflow1-consumer"
 
+$SubscriptionId = $(az account show --query id -o tsv)
+$TenantId = $(az account show --query tenantId -o tsv)
+
 # PRINT
 Write-Host "**********************************************************************"
 Write-Host " CREATING: GENERAL RESOURCE GROUP"
@@ -97,9 +100,13 @@ Write-Host "********************************************************************
 
 az storage account create -n $StorageAccountName -g $ResourceGroupName -l $Location --sku Standard_LRS
 $StorageAccountConnectionString=$(az storage account show-connection-string -n $StorageAccountName -g $ResourceGroupName -o tsv)
+$StorageAccountPrimaryKey=$(az storage account keys list -n $StorageAccountName -g $ResourceGroupName --query [0].value -o tsv)
 
 # adding storage connection string secret
 az keyvault secret set --name "storage-connectionstring-$($StorageAccountName)" --vault-name $KeyVaultAccountName --value $StorageAccountConnectionString
+
+# adding storage primary key secret
+az keyvault secret set --name "storage-primarykey-$($StorageAccountName)" --vault-name $KeyVaultAccountName --value $StorageAccountPrimaryKey
 
 # PRINT
 Write-Host "**********************************************************************"
@@ -154,6 +161,8 @@ Write-Host ""
 Write-Host "****************************CALL TO ACTION****************************"
 Write-Host ""
 Write-Host " Deployment alias: $($DeploymentAlias)"
+Write-Host " Subscription id: $($SubscriptionId)"
+Write-Host " Tenant id: $($TenantId)"
 Write-Host " Resource group: $($ResourceGroupName)"
 Write-Host " Location: $($Location)"
 Write-Host " Cluster name: $($AKSClusterName)"
@@ -165,6 +174,7 @@ Write-Host " Container registry name: $($ContainerRegistryName)"
 Write-Host " Key vault name: $($KeyVaultAccountName)"
 Write-Host " Storage name: $($StorageAccountName)"
 Write-Host " Storage connection string: $($StorageAccountConnectionString)"
+Write-Host " Storage primary key: $($StorageAccountPrimaryKey)"
 Write-Host " Service bus namespace name: $($ServiceBusNamespaceName)"
 Write-Host " Service bus connection string: $($ServiceBusPrimaryConnectionString)"
 Write-Host " CosmosDB account name: $($CosmosDBAccountName)"

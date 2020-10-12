@@ -4,11 +4,9 @@
 
 azureIdentity:
   name: kubernetes.azureidentity
-  spec:
-    resourceID: 
-    clientID: 
+  resourceID: 
+  clientID: 
 azureIdentityBinding:
   name: kubernetes.azureidentitybinding
-  spec:
-    azureIdentity: kubernetes.azureidentity
-    selector: kubernetes.azureidentity
+  azureIdentity: kubernetes.azureidentity
+  selector: kubernetes.azureidentity

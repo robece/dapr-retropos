@@ -5,19 +5,20 @@
 deployment:
   replicas: 5
   aadpodidbinding: kubernetes.azureidentity
-  name: consumer-function
+  name: subscriber-api
   dapr:
-    name: consumer-function
+    name: subscriber-api
     config: dapr.tracing
-  containerName: consumer-function
+  containerName: subscriber-api
   image:
     repository: 
     pullPolicy: Always
   env:
-    hostname: "localhost:80"
-    azureWebJobsStorage: 
+    environment: Production
+    pubSubComponentName: dapr.pubsub
+    pubSubTopicName: message-topic
+    outputBindingComponentName: dapr.binding.subscriber
     serviceBusConnectionString: 
-    consumerStateComponentName: dapr.state.consumer-state
   resources:
     requests:
       memory: "200Mi"
@@ -27,18 +28,19 @@ deployment:
       cpu: "200m"
 keda:
   triggerAuthentication:
-    name: keda.triggerauthentication.consumer-function
+    name: keda.triggerauthentication.subscriber-api
   scaledObject:
-    name: keda.scaledobject.consumer-function
-    deploymentName: consumer-function
+    name: keda.scaledobject.subscriber-api
+    deploymentName: subscriber-api
     pollingInterval: 5
     coolDownPeriod: 0
     minReplicaCount: 5
     maxReplicaCount: 20
     triggers:
       type: azure-servicebus
-      queueName: internal-queue
+      topicName: message-topic
+      subscriptionName: subscriber-api
       messageCount: 2
-      authenticationRef: keda.triggerauthentication.consumer-function
+      authenticationRef: keda.triggerauthentication.subscriber-api
 secretProviderClass:
   name: secretproviderclass.keyvault

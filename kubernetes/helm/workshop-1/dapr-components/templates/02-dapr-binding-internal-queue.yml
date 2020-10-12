@@ -14,6 +14,6 @@ spec:
 scopes:
   {{- range $scope := .Values.bindingInternalQueue.scopes }}
   - {{ $scope }}
-  {{- end }}  
+  {{- end }}
 auth:
   secretStore: {{ .Values.secretStore.name }}

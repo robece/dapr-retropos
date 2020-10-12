@@ -34,7 +34,9 @@ spec:
         env:
           - name: ASPNETCORE_ENVIRONMENT
             value: "{{ .Values.deployment.env.environment }}"
-          - name: OutputBindingComponentName
-            value: "{{ .Values.deployment.env.outputBindingComponentName }}"
+          - name: PubSubComponentName
+            value: "{{ .Values.deployment.env.pubSubComponentName }}"
+          - name: PubSubTopicName
+            value: "{{ .Values.deployment.env.pubSubTopicName }}"
         resources:
           {{- toYaml .Values.resources | nindent 12 }}

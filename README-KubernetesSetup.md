@@ -43,9 +43,15 @@ Steps:
 
     Note: For more information: https://github.com/Azure/aad-pod-identity.
 
-5. Run the script: powershell/aad-permissions.ps1 to assign permissions.
+5. Connect to Azure Container Registry via Azure CLI.
 
-    To run the script you need to modified the following values with the right ones before execute the script.
+    ```
+    az login
+    ```
+
+6. Run the script: powershell/aad-permissions.ps1 to assign permissions.
+
+    Modified the following values with the right ones before execute the script.
 
     ```
     - SubscriptionId="REPLACE"
@@ -58,7 +64,13 @@ Steps:
     .\powershell\aad-permissions.ps1
     ```
 
-6. Install Azure Active Directory Pod Identity chart.
+    Note: Use this command to get the current subscription id or use the CALL TO ACTION information after the azure deployment powershell script execution.
+    
+    ```
+    az account show --query id -o tsv
+    ```
+
+7. Install Azure Active Directory Pod Identity chart.
 
     <b>Chart:</b> aad-pod-identity
     
@@ -66,16 +78,16 @@ Steps:
 
     | Required Parameters | Description |
     |-|-|
-    | azureIdentity.spec.resourceID | managed identity id |
-    | azureIdentity.spec.clientID | managed identity client id |
+    | azureIdentity.resourceID | managed identity id |
+    | azureIdentity.clientID | managed identity client id |
 
-     <b>Example of helm chart installation:</b>
+    <b>Chart installation sample:</b>
 
     ```
     helm upgrade --install aad-pod-identity kubernetes\helm\aad-pod-identity 
                  --namespace default 
-                 --set azureIdentity.spec.resourceID=/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/MC_retropos-group_retroposks_westus2/providers/Microsoft.ManagedIdentity/userAssignedIdentities/retroposks-agentpool 
-                 --set azureIdentity.spec.clientID=00000000-0000-0000-0000-000000000000
+                 --set azureIdentity.resourceID=/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/MC_retropos-group_retroposks_westus2/providers/Microsoft.ManagedIdentity/userAssignedIdentities/retroposks-agentpool 
+                 --set azureIdentity.clientID=00000000-0000-0000-0000-000000000000
     ```
 
 ## DAPR configuration

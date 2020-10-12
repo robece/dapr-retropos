@@ -1,0 +1,8 @@
+apiVersion: keda.k8s.io/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: {{ .Values.keda.triggerAuthentication.name }}
+spec:
+  env: # Optional.
+    - parameter: connection # Required.
+      name: ServiceBusConnectionString # Required.

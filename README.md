@@ -14,7 +14,7 @@ These set of workflows intents to be a part of a production ready architecture, 
 
 | Attribute | Details |
 |--------|--------|
-| [Dapr runtime version](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#prerequisites) | 0.10.0 |
+| [Dapr runtime version](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#prerequisites) | 0.11.2 |
 | [KEDA](https://keda.sh/) | 1.5.0 |
 | [HELM](https://helm.sh/docs/intro/install/) | 3.2.1 |
 | [.NET Core](https://dotnet.microsoft.com/download/dotnet-core/3.1) | 3.1 |

@@ -3,5 +3,5 @@ kind: AzureIdentityBinding
 metadata:
   name: {{ .Values.azureIdentityBinding.name }}
 spec:
-  azureIdentity: "{{ .Values.azureIdentityBinding.spec.azureIdentity }}"
-  selector: "{{ .Values.azureIdentityBinding.spec.selector }}"
+  azureIdentity: "{{ .Values.azureIdentityBinding.azureIdentity }}"
+  selector: "{{ .Values.azureIdentityBinding.selector }}"

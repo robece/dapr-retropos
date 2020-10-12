@@ -4,5 +4,5 @@ metadata:
   name: {{ .Values.azureIdentity.name }}
 spec:
   type: 0 # set type: 0 for user-assigned MSI, type: 1 for Service Principal with client secret, or type: 2 for Service Principal with certificate. 
-  resourceID: "{{ .Values.azureIdentity.spec.resourceID }}" #identity.id
-  clientID: "{{ .Values.azureIdentity.spec.clientID }}" # identity.clientId
+  resourceID: "{{ .Values.azureIdentity.resourceID }}" #identity.id
+  clientID: "{{ .Values.azureIdentity.clientID }}" # identity.clientId

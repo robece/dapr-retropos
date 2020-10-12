@@ -28,20 +28,19 @@ spec:
         - containerPort: 80
         imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
         env:
-          - name: WEBSITE_HOSTNAME
-            value: "{{ .Values.deployment.env.hostname }}"
-          - name: AzureWebJobsStorage
-            valueFrom:
-              secretKeyRef:
-                name: "{{ .Values.deployment.env.azureWebJobsStorage }}"
-                key: "{{ .Values.deployment.env.azureWebJobsStorage }}"
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "{{ .Values.deployment.env.environment }}"
+          - name: PubSubComponentName
+            value: "{{ .Values.deployment.env.pubSubComponentName }}"
+          - name: PubSubTopicName
+            value: "{{ .Values.deployment.env.pubSubTopicName }}"
+          - name: OutputBindingComponentName
+            value: "{{ .Values.deployment.env.outputBindingComponentName }}"
           - name: ServiceBusConnectionString
             valueFrom:
               secretKeyRef:
                 name: "{{ .Values.deployment.env.serviceBusConnectionString }}"
                 key: "{{ .Values.deployment.env.serviceBusConnectionString }}"
-          - name: ConsumerStateComponentName
-            value: "{{ .Values.deployment.env.consumerStateComponentName }}"
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
         volumeMounts:

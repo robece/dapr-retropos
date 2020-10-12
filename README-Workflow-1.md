@@ -104,28 +104,30 @@ Note: During the development of the project, I found some early adoption conside
 
     | Required Parameters | Description |
     |-|-|
-    | secretProviderClass.keyVaultName | name of the key vault resource |
-    | secretProviderClass.resourceGroup | name of the resource group |
-    | secretProviderClass.subscriptionId | subscription identifier |
-    | secretProviderClass.tenantId | tenant identifier |
-    | secretProviderClass.databaseConnectionString | cosmosdb connection string secret on key vault |
-    | secretProviderClass.databasePrimaryKey | cosmosdb primary key secret on key vault |
-    | secretProviderClass.serviceBusConnectionString | service bus connection string secret on key vault |
-    | secretProviderClass.storageConnectionString | storage connection string secret on key vault |
+    | secretProviderClass.secretObjects.databaseConnectionString | cosmosdb connection string secret on key vault |
+    | secretProviderClass.secretObjects.databasePrimaryKey | cosmosdb primary key secret on key vault |
+    | secretProviderClass.secretObjects.serviceBusConnectionString | service bus connection string secret on key vault |
+    | secretProviderClass.secretObjects.storageConnectionString | storage connection string secret on key vault |
+    | secretProviderClass.secretObjects.storagePrimaryKey | storage primary key secret on key vault |
+    | secretProviderClass.parameters.keyVaultName | name of the key vault resource |
+    | secretProviderClass.parameters.resourceGroup | name of the resource group |
+    | secretProviderClass.parameters.subscriptionId | subscription identifier |
+    | secretProviderClass.parameters.tenantId | tenant identifier |
 
-    <b>Example of helm chart installation:</b>
+    <b>Chart installation sample:</b>
 
     ```
     helm upgrade --install security-components kubernetes\helm\workshop-1\security-components 
                  --namespace retropos-workflow-1 
-                 --set secretProviderClass.keyVaultName=retroposkv 
-                 --set secretProviderClass.resourceGroup=retropos-group 
-                 --set secretProviderClass.subscriptionId=00000000-0000-0000-0000-000000000000 
-                 --set secretProviderClass.tenantId=00000000-0000-0000-0000-000000000000 
-                 --set secretProviderClass.databaseConnectionString=cosmosdb-connectionstring-retroposcos 
-                 --set secretProviderClass.databasePrimaryKey=cosmosdb-primarykey-retroposcos 
-                 --set secretProviderClass.serviceBusConnectionString=servicebus-connectionstring-retropossbns 
-                 --set secretProviderClass.storageConnectionString=storage-connectionstring-retroposstg
+                 --set secretProviderClass.secretObjects.databaseConnectionString=cosmosdb-connectionstring-retroposcos 
+                 --set secretProviderClass.secretObjects.databasePrimaryKey=cosmosdb-primarykey-retroposcos 
+                 --set secretProviderClass.secretObjects.serviceBusConnectionString=servicebus-connectionstring-retropossbns 
+                 --set secretProviderClass.secretObjects.storageConnectionString=storage-connectionstring-retroposstg 
+                 --set secretProviderClass.secretObjects.storagePrimaryKey=storage-primarykey-retroposstg 
+                 --set secretProviderClass.parameters.keyVaultName=retroposkv 
+                 --set secretProviderClass.parameters.resourceGroup=retropos-group 
+                 --set secretProviderClass.parameters.subscriptionId=00000000-0000-0000-0000-000000000000 
+                 --set secretProviderClass.parameters.tenantId=00000000-0000-0000-0000-000000000000
     ```
 
     <b>Chart:</b> dapr-components
@@ -141,7 +143,7 @@ Note: During the development of the project, I found some early adoption conside
     | stateConsumerState.masterKey | cosmosdb primary key secret on key vault |
     | stateConsumerState.database | cosmosdb database name |
 
-    <b>Example of helm chart installation:</b>
+    <b>Chart installation sample:</b>
 
     ```
     helm upgrade --install dapr-components kubernetes\helm\workshop-1\dapr-components 
@@ -165,7 +167,7 @@ Note: During the development of the project, I found some early adoption conside
     | autoscaling.minReplicas | exposed service api autoscaler pod min replicas |
     | autoscaling.maxReplicas | exposed service api autoscaler pod max replicas |
 
-    <b>Example of helm chart installation:</b>
+    <b>Chart installation sample:</b>
 
     ```
     helm upgrade --install exposed-api kubernetes\helm\workshop-1\exposed-api 
@@ -190,7 +192,7 @@ Note: During the development of the project, I found some early adoption conside
     | keda.scaledObject.maxReplicaCount | consumer function keda max pod replicas |
     | keda.scaledObject.triggers.messageCount | consumer function keda message count |
 
-    <b>Example of helm chart installation:</b>
+    <b>Chart installation sample:</b>
 
     ```
     helm upgrade --install consumer-function kubernetes\helm\workshop-1\consumer-function 
