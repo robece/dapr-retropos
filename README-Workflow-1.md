@@ -117,7 +117,7 @@ Note: During the development of the project, I found some early adoption conside
     <b>Chart installation sample:</b>
 
     ```
-    helm upgrade --install security-components kubernetes\helm\workshop-1\security-components 
+    helm upgrade --install security-components kubernetes\helm\workflow-1\security-components 
                  --namespace retropos-workflow-1 
                  --set secretProviderClass.secretObjects.databaseConnectionString=cosmosdb-connectionstring-retroposcos 
                  --set secretProviderClass.secretObjects.databasePrimaryKey=cosmosdb-primarykey-retroposcos 
@@ -146,7 +146,7 @@ Note: During the development of the project, I found some early adoption conside
     <b>Chart installation sample:</b>
 
     ```
-    helm upgrade --install dapr-components kubernetes\helm\workshop-1\dapr-components 
+    helm upgrade --install dapr-components kubernetes\helm\workflow-1\dapr-components 
                  --namespace retropos-workflow-1 
                  --set secretStore.vaultName=retroposkv 
                  --set secretStore.clientId=00000000-0000-0000-0000-000000000000 
@@ -170,7 +170,7 @@ Note: During the development of the project, I found some early adoption conside
     <b>Chart installation sample:</b>
 
     ```
-    helm upgrade --install exposed-api kubernetes\helm\workshop-1\exposed-api 
+    helm upgrade --install exposed-api kubernetes\helm\workflow-1\exposed-api 
                  --namespace retropos-workflow-1 
                  --set deployment.replicas=2 
                  --set deployment.image.repository=retroposcr.azurecr.io/exposed-api:1.0.0 
@@ -195,7 +195,7 @@ Note: During the development of the project, I found some early adoption conside
     <b>Chart installation sample:</b>
 
     ```
-    helm upgrade --install consumer-function kubernetes\helm\workshop-1\consumer-function 
+    helm upgrade --install consumer-function kubernetes\helm\workflow-1\consumer-function 
                  --namespace retropos-workflow-1 
                  --set deployment.replicas=5 
                  --set deployment.image.repository=retroposcr.azurecr.io/consumer-function:1.0.0 
